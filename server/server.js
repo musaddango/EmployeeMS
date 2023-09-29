@@ -1,4 +1,4 @@
-import { express } from "express";
+import express from "express";
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -23,7 +23,21 @@ app.use(cookieParser());
 
 
 app.post('/login', (req, res)=>{
-    console.log(req.body);
+    db.select('*')
+      .from('login')
+      .where({email: req.body.email,
+               password: req.body.password}
+      )      
+      .then(data => {
+        if(data.length > 0){
+          res.json({status: 'success', data: data[0]});
+        }else{
+          res.json({status: 'error', error: 'Email or password invalid'});
+        }
+        
+
+      })
+      .catch(err => console.log('Error'));
 })
 const port = 4000;
 app.listen(port, ()=>{

@@ -1,4 +1,7 @@
-body {
+.login-container {
+
+    height: 100vh;
+    
     /* fallback for old browsers */
     background: #6a11cb;
   
