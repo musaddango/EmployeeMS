@@ -1,11 +1,9 @@
-import React from 'react';
+import SideNavBar from "../components/Sidebar";
 
-function Dashboard(props) {
-    return (
-        <div>
-            <h2>Dashboard</h2>
-        </div>
-    );
+export default function Dashboard() {
+  return (
+    <div>
+      <SideNavBar />
+    </div>
+  );
 }
-
-export default Dashboard;
