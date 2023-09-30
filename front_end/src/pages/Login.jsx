@@ -68,7 +68,7 @@ function Login({user}) {
                   <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' onChange={onEmailChange} label='Email address' id='formControlLg' type='email' size="lg"/>
                   <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg1' onChange={onPasswordChange} type='password' size="lg"/>
     
-                  <MDBBtn outline onClick={onSubmit} className='mx-2 px-5' color='white' size='lg'>
+                  <MDBBtn outline className='mx-2 px-5' color='white' size='lg' onClick={onSubmit}>
                     Login
                   </MDBBtn>
                   

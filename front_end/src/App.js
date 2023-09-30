@@ -4,7 +4,7 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // pages
 import Login from './pages/Login.jsx';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/dashboard/Dashboard';
 
 
 function App() {
