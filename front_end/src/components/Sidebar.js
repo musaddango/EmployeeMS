@@ -1,39 +1,37 @@
-import React from "react";
+import {useState} from "react";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
-
 import SideNav, {
+  // onToggle,
   NavItem,
   NavIcon,
   NavText
 } from "@trendmicro/react-sidenav";
+import {  useNavigate } from 'react-router-dom';
+import './Sidebar.css';
 
-class SideNavBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isVisible: true
-    };
-  }
 
-  render() {
+function SideNavBar (props) {
+ 
+    const [isVisible, setIsVisible] = useState(true);
+    const navigate = useNavigate();
     return (
-      <SideNav expanded={this.state.isVisible} style={{'background-color': '#4f37de'}}>
+      <SideNav expanded={isVisible} style={{backgroundColor: 'rgb(79, 55, 222)'}}>
         <SideNav.Toggle
           onClick={() => {
-            this.setState({ isVisible: !this.state.isVisible });
+            setIsVisible(!isVisible);
           }}
         />
         <SideNav.Nav defaultSelected="home">
-          <NavItem eventKey="dashboard">
-            <NavIcon>
-              <i 
-                className="fa fa-tachometer" 
-                style={{ fontSize: "1.5em" }} 
-              />
-            </NavIcon>
-            <NavText>Dashboard</NavText>
+          <NavItem eventKey="dashboard" onClick={()=> navigate('./home')}>
+              <NavIcon>
+                <i 
+                  className="fa fa-tachometer" 
+                  style={{ fontSize: "1.5em" }} 
+                />
+              </NavIcon>
+              <NavText className='text'> Dashboard</NavText>
           </NavItem>
-          <NavItem eventKey="profile">
+          <NavItem eventKey="profile" onClick={()=> navigate('./profile')}>
             <NavIcon>
               <i
                 className="fa fa-user"
@@ -41,9 +39,9 @@ class SideNavBar extends React.Component {
                 aria-hidden="true"
               />
             </NavIcon>
-            <NavText>Profile</NavText>
+            <NavText className='text'>Profile</NavText>
           </NavItem>
-          <NavItem eventKey="employees">
+          <NavItem eventKey="employees" onClick={()=> navigate('./employees')}>
             <NavIcon>
               <i
                 className="fa fa-users"
@@ -51,9 +49,9 @@ class SideNavBar extends React.Component {
                 aria-hidden="true"
               />
             </NavIcon>
-            <NavText>Manage Employees</NavText>
+            <NavText className='text'>Manage Employees</NavText>
           </NavItem>
-          <NavItem eventKey="logout">
+          <NavItem eventKey="logout" onClick={()=> navigate('/')}>
             <NavIcon>
               <i
                 className="fa fa-power-off"
@@ -61,12 +59,11 @@ class SideNavBar extends React.Component {
                 aria-hidden="true"
               />
             </NavIcon>
-            <NavText>Log out</NavText>
+            <NavText className='text'>Log out</NavText>
           </NavItem>
         </SideNav.Nav>
       </SideNav>
     );
   }
-}
 
 export default SideNavBar;

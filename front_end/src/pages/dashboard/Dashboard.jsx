@@ -1,9 +1,10 @@
+import { Outlet } from "react-router-dom";
 import SideNavBar from "../../components/Sidebar";
 
 export default function Dashboard() {
   return (
     <>
-      <div className='row'>
+      <div className='row d-flex'>
         <div className="col">
           <SideNavBar />
         </div>
@@ -12,6 +13,10 @@ export default function Dashboard() {
         <div className="p-2 d-flex justify-content-center shadow">
           <h2>Employee Management System</h2>
         </div>
+        <div>
+          <Outlet />
+        </div>
+          
       </div>
       
     </>

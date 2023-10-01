@@ -14,7 +14,7 @@ import {
   from 'mdb-react-ui-kit';
 
 
-function Login({user}) {
+function Login() {
 
   // state variables
   const [email, setEmail] = useState('');
@@ -40,13 +40,12 @@ function Login({user}) {
       password: password
     }
     axios.post('http://localhost:4000/login', data)
-    .then(res => { console.log('no data')
-      if(res.data.status==='success'){
-        user(res.data.data);
-        navigate('/dashboard');
-        setError('');
+    .then(res => {
+        if(res.data.status==='success'){
+          navigate('/dashboard');
+          setError('');
       }else{
-        setError(res.data.error);
+          setError(res.data.error);
       }
   });
   }
