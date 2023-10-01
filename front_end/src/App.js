@@ -8,6 +8,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
+import CreateAccount from './pages/dashboard/CreateAccount';
 
 const router = createBrowserRouter([
   {
@@ -29,9 +30,13 @@ const router = createBrowserRouter([
       {
         path:'employees',
         element: <Employees />
-      }
+      },
+      {
+        path: 'create',
+        element: <CreateAccount />
+      }      
     ]
-  }
+  },
 ])
 
 
