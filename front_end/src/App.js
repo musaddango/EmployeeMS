@@ -16,6 +16,16 @@ const router = createBrowserRouter([
     element:<Login />
   },
   {
+    path:'/register',
+    element: <Dashboard />,
+    children:[
+      {
+        path: 'userreg',
+        element: <CreateAccount />
+      }
+    ]
+  },
+  {
     path:'/dashboard',
     element: <Dashboard />,
     children:[
@@ -29,12 +39,15 @@ const router = createBrowserRouter([
       },
       {
         path:'employees',
-        element: <Employees />
+        element: <Employees />,
+        children:[
+          {
+            path: 'create',
+            element: <CreateAccount />
+          }  
+        ]
       },
-      {
-        path: 'create',
-        element: <CreateAccount />
-      }      
+          
     ]
   },
 ])

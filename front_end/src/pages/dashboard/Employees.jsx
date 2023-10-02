@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 function Employees() {
     
@@ -13,6 +13,9 @@ function Employees() {
                 className='btn btn-success' >
                     Add Employee
             </Link>
+            <div>
+                <Outlet />
+            </div>
         </div>
     );
 }
