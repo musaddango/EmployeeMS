@@ -1,18 +1,24 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 function Employees() {
-    
+    const navigate = useNavigate();
+
+    const addEmployee = ()=>{
+        navigate('./create')
+    }
+
     return (
         <div className='px-5 py-3'>
             <div className='d-flex justify-content-center'>
                 <h3>Employee List</h3>
             </div>
             <hr />
-            <Link to='./create' 
+            <button 
+                onClick={addEmployee} 
                 className='btn btn-success' >
                     Add Employee
-            </Link>
+            </button>
             <div>
                 <Outlet />
             </div>
