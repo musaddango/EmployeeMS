@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function CreateAccount() {
@@ -29,14 +29,14 @@ function CreateAccount() {
 
     const handleSubmit = (event)=>{
         event.preventDefault();
-        // axios.post(empDetails)
+        axios.post('http://localhost:4000/create-user', empDetails)
         console.log(empDetails);
         navigate(-1)
     }
     return (
-        <div className="regform" style={{width:"30%", margin: "auto"}}>
+        <div className="regform" style={{width:"40%", margin: "auto"}}>
             <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="form-group p-2">
                     <input 
                         onChange={onChange}
                         type="text" 
@@ -48,7 +48,7 @@ function CreateAccount() {
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group p-2">
                     <input 
                         onChange={onChange}
                         type="email" 
@@ -60,7 +60,7 @@ function CreateAccount() {
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group p-2">
                     <input 
                         onChange={onChange}
                         type="text" 
@@ -72,7 +72,7 @@ function CreateAccount() {
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group p-2">
                     <input 
                         onChange={onChange}
                         type="password" 
@@ -83,7 +83,8 @@ function CreateAccount() {
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
-                <div className="form-group d-flex">
+                <div className="form-group d-flex justify-content-between p-2">
+                    <label><b>Image: </b></label>
                     <input 
                         onChange={onChange}
                         type="file" 

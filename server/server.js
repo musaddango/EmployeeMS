@@ -39,6 +39,13 @@ app.post('/login', (req, res)=>{
       })
       .catch(err => console.log('Error'));
 })
+
+app.post('/create-user', (req, res)=>{
+  const {name, email, password, address, image} = req.body;
+  console.log(name, email, image);
+
+})
+
 const port = 4000;
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}`)
