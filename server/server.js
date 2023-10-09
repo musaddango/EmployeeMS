@@ -34,13 +34,12 @@ app.post('/login', (req, res)=>{
         }else{
           res.json({status: 'error', error: 'Email or password invalid'});
         }
-        
 
       })
       .catch(err => console.log('Error'));
 })
 
-app.post('/create-user', (req, res)=>{
+app.post('/create', (req, res)=>{
   const {name, email, password, address, image} = req.body;
   console.log(name, email, image);
 

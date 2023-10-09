@@ -29,13 +29,18 @@ function CreateAccount() {
 
     const handleSubmit = (event)=>{
         event.preventDefault();
-        axios.post('http://localhost:4000/create-user', empDetails)
-        console.log(empDetails);
+
+        const form = document.querySelector('#form');
+        const formData = new FormData(form);
+
+        axios.post('http://localhost:4000/create', formData)
+        .then(res => console.log(res))
+        // console.log(empDetails);
         navigate(-1)
     }
     return (
         <div className="regform" style={{width:"40%", margin: "auto"}}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id="form">
             <div className="form-group p-2">
                     <input 
                         onChange={onChange}
