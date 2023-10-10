@@ -29,19 +29,16 @@ function CreateAccount() {
 
     const handleSubmit = (event)=>{
         event.preventDefault();
-
-        const form = document.querySelector('#form');
-        const formData = new FormData(form);
+        const formData = new FormData();
         formData.append("name", empDetails.name);
         formData.append("email", empDetails.email);
-        formData.append("address", empDetails.address);
         formData.append("password", empDetails.password);
         formData.append("image", empDetails.image);
 
         axios.post('http://localhost:4000/create', formData)
         .then(res => console.log(res))
-        .catch(err => console.log('Error occurred'))
-        // console.log(empDetails);
+        .catch(err => console.log(err))
+        console.log(empDetails);
         navigate(-1)
     }
     return (
@@ -56,6 +53,7 @@ function CreateAccount() {
                         id="Name" 
                         aria-describedby="address" 
                         placeholder="Enter Name" 
+                        autoComplete="on"
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
@@ -68,6 +66,7 @@ function CreateAccount() {
                         id="exampleInputEmail1" 
                         aria-describedby="emailHelp" 
                         placeholder="Enter email" 
+                        autoComplete="on"
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
@@ -79,7 +78,8 @@ function CreateAccount() {
                         className="form-control" 
                         id="address" 
                         aria-describedby="address" 
-                        placeholder="Enter address" 
+                        placeholder="Enter address"
+                        autoComplete="no" 
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
@@ -90,7 +90,8 @@ function CreateAccount() {
                         name="password"
                         className="form-control" 
                         id="exampleInputPassword1" 
-                        placeholder="Password" 
+                        placeholder="Password"
+                        autoComplete="new-password" 
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
@@ -101,7 +102,6 @@ function CreateAccount() {
                         type="file" 
                         name="image" 
                         accept="image/*" 
-                        placeholder="choose image" 
                     />
                 </div>
 

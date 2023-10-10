@@ -23,14 +23,16 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-const storage = multer({
+const storage = multer.diskStorage({
   destination: (req, file, cb) =>{
-    cb(null, './public/image')
+    cb(null, 'public/images');
   },
   filename: (req, file, cb) =>{
     cb(null, file.fieldname + Date.now() + '_' + path.extname(file.originalname));
   }
 })
+
+const upload = multer({storage: storage});
 
 app.post('/login', (req, res)=>{
     db.select('*')
@@ -49,9 +51,9 @@ app.post('/login', (req, res)=>{
       .catch(err => console.log('Error'));
 })
 
-app.post('/create', (req, res)=>{
-  const {name, email, password, address, image} = req.body;
-  console.log(name, email, image);
+app.post('/create', upload.single('image'), (req, res)=>{
+  console.log(req.file);
+  console.log(req.body);
 
 })
 
