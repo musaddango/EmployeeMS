@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import knex from 'knex';
 import cookieParser from "cookie-parser";
+import multer from "multer";
+import path from "path";
 
 
 const db = knex({
@@ -21,6 +23,14 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+const storage = multer({
+  destination: (req, file, cb) =>{
+    cb(null, './public/image')
+  },
+  filename: (req, file, cb) =>{
+    cb(null, file.fieldname + Date.now() + '_' + path.extname(file.originalname));
+  }
+})
 
 app.post('/login', (req, res)=>{
     db.select('*')

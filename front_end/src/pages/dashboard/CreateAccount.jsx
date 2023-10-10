@@ -32,9 +32,15 @@ function CreateAccount() {
 
         const form = document.querySelector('#form');
         const formData = new FormData(form);
+        formData.append("name", empDetails.name);
+        formData.append("email", empDetails.email);
+        formData.append("address", empDetails.address);
+        formData.append("password", empDetails.password);
+        formData.append("image", empDetails.image);
 
         axios.post('http://localhost:4000/create', formData)
         .then(res => console.log(res))
+        .catch(err => console.log('Error occurred'))
         // console.log(empDetails);
         navigate(-1)
     }
