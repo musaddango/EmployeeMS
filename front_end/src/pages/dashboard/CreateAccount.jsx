@@ -32,6 +32,7 @@ function CreateAccount() {
         const formData = new FormData();
         formData.append("name", empDetails.name);
         formData.append("email", empDetails.email);
+        formData.append("address", empDetails.address);
         formData.append("password", empDetails.password);
         formData.append("image", empDetails.image);
 
@@ -95,8 +96,7 @@ function CreateAccount() {
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
                 </div>
-                <div className="form-group d-flex justify-content-between p-2">
-                    <label><b>Image: </b></label>
+                <div className="form-group d-flex justify-content-start p-2">
                     <input 
                         onChange={onChange}
                         type="file" 
