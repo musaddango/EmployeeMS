@@ -14,6 +14,22 @@ function Employees() {
                 <h3>Employee List</h3>
             </div>
             <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
             <button 
                 onClick={addEmployee} 
                 className='btn btn-success' >

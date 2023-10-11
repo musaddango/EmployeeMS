@@ -9,6 +9,7 @@ function CreateAccount() {
         email:'',
         address:'',
         password: '',
+        salary: null,
         image: null
     })
 
@@ -24,6 +25,8 @@ function CreateAccount() {
             setEmpDetails({...empDetails, image:event.target.files[0]});
         }else if(event.target.name === "name"){
             setEmpDetails({...empDetails, name:event.target.value});
+        }else if(event.target.name === "salary"){
+            setEmpDetails({...empDetails, salary:event.target.value});
         }
     }
 
@@ -35,12 +38,12 @@ function CreateAccount() {
         formData.append("address", empDetails.address);
         formData.append("password", empDetails.password);
         formData.append("image", empDetails.image);
+        formData.append("salary", empDetails.salary)
 
         axios.post('http://localhost:4000/create', formData)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-        console.log(empDetails);
+        .catch(err => console.log(err));
         navigate(-1)
+        
     }
     return (
         <div className="regform" style={{width:"40%", margin: "auto"}}>
@@ -67,6 +70,18 @@ function CreateAccount() {
                         id="exampleInputEmail1" 
                         aria-describedby="emailHelp" 
                         placeholder="Enter email" 
+                        autoComplete="on"
+                        style={{marginTop:"5px", marginBottom:"5px"}} 
+                    />
+                </div>
+                <div className="form-group p-2">
+                    <input 
+                        onChange={onChange}
+                        type="number" 
+                        name="salary"
+                        className="form-control" 
+                        id="exampleInputSalary" 
+                        placeholder="Employee Salary" 
                         autoComplete="on"
                         style={{marginTop:"5px", marginBottom:"5px"}} 
                     />
