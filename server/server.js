@@ -52,9 +52,22 @@ app.post('/login', (req, res)=>{
 })
 
 app.post('/create', upload.single('image'), (req, res)=>{
-  console.log(req.file);
-  console.log(req.body);
+  const {name, email, address, password} = req.body;
 
+    bcrypt.hash(password.toString(), 10, (err, result)=>{
+    if(err) return res.json(`There was an error storing data`);
+      db('employees').insert({
+        name: name,
+        email: email,
+        address: address,
+        password: result,
+        image: req.file.filename
+      })
+      .returning('name')
+      .then(res => console.log(`Congratulations. ${name}'s registration was successful`))
+      .catch(err => console.log(`Error Registering Employee.`))
+    }
+  )
 })
 
 const port = 4000;
