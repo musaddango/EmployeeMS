@@ -51,12 +51,8 @@ app.post('/login', (req, res)=>{
       .catch(err => console.log('Error'));
 })
 
-app.post('/create', upload.single('image'), (req, res)=>{
+app.post('/create', upload.single('image'), (req, res)=>{ 
     const {name, email, address, password, salary} = req.body;
-
-    if(!email || !name || !req.file){
-      return res.json('Invalid employee registration');
-    }
 
     bcrypt.hash(password.toString(), 10, (err, result)=>{
     if(err) return res.json(`There was an error storing data`);
@@ -73,6 +69,13 @@ app.post('/create', upload.single('image'), (req, res)=>{
       .catch(err => console.log(`Error Registering Employee.`))
     }
   )
+})
+
+app.get('/getEmployees', (req, res)=>{
+  db.select('*')
+  .from('employees')
+  .then(data=> res.json(data)) 
+  .catch(err=> res.json(`Error getting employee data`))
 })
 
 const port = 4000;
