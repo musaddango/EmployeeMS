@@ -19,9 +19,12 @@ const db = knex({
     }
   });
 const app = express();
+
+// Middlewares 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.static('public'));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) =>{
@@ -44,7 +47,7 @@ app.post('/login', (req, res)=>{
         if(data.length > 0){
           res.json({status: 'success', data: data[0]});
         }else{
-          res.json({status: 'error', error: 'Email or password invalid'});
+          res.json({status: 'error', error: 'Email or password invalid'}); 
         }
 
       })

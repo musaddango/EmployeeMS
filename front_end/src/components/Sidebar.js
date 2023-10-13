@@ -15,7 +15,7 @@ function SideNavBar (props) {
     const [isVisible, setIsVisible] = useState(true);
     const navigate = useNavigate();
     return (
-      <SideNav  defaultExpanded  style={{backgroundColor: 'rgb(79, 55, 222)'}}>
+      <SideNav  defaultExpanded  className='bg-success'>
         <SideNav.Toggle
           onClick={() => {
             setIsVisible(!isVisible);

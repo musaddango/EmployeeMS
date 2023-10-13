@@ -3,7 +3,7 @@ import SideNavBar from "../../components/Sidebar";
 
 export default function Dashboard() {
   return (
-    <>
+    <div className="">
       <div className='row d-flex'>
         <div className="col">
           <SideNavBar />
@@ -19,6 +19,6 @@ export default function Dashboard() {
           
       </div>
       
-    </>
+    </div>
   );
 }
