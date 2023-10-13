@@ -21,19 +21,22 @@ function Employees() {
         navigate('./create')
     }
 
+    const handleEdit = (event)=>{
+        event.preventDefault();
+        // action
+    }
+
+    const handleDelete = (event)=>{
+        event.preventDefault();
+        
+    }
+
     return (
         <div className='px-5 py-3'>
             <div className='d-flex justify-content-center'>
                 <h3>Employee List</h3>
             </div>
-            <button 
-                onClick={addEmployee} 
-                className='btn btn-success'>
-                    Add Employee
-            </button>
-            <div>
-                <Outlet />
-            </div>
+            
             <hr />
             <div className='d-flex justify-content-center align-items-center w-70' style={{width: 80+'%', margin: 'auto'}}>
                 <table className='table'>
@@ -64,8 +67,20 @@ function Employees() {
                                     <td>{emp.address}</td>
                                     <td>{emp.salary}</td>
                                     <td>
-                                        <button className='btn btn-success m-1'>Edit</button>
-                                        <button className='btn btn-danger m-1'>Delete</button>
+                                        <button 
+                                            className='btn btn-success m-1' 
+                                            name={emp.id} 
+                                            onClick={handleEdit}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button 
+                                            className='btn btn-danger m-1' 
+                                            name={emp.id} 
+                                            onClick={handleDelete}
+                                        >
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>;
                             })}
@@ -73,6 +88,14 @@ function Employees() {
                 </table>
             </div>
             <hr />
+            <button 
+                onClick={addEmployee} 
+                className='btn btn-success'>
+                    Add Employee
+            </button>
+            <div>
+                <Outlet />
+            </div>
         </div>
     );
 }

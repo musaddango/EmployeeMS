@@ -16,9 +16,7 @@ export default function Dashboard() {
         <div>
           <Outlet />
         </div>
-          
       </div>
-      
     </div>
   );
 }

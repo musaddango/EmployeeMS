@@ -8,6 +8,7 @@ import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
 import CreateAccount from './pages/dashboard/CreateAccount';
+import EditEmployee from './pages/dashboard/EditEmployee';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
           }  
         ]
       },
+      {
+        path: 'employee_edit/:id',
+        element: <EditEmployee />
+      }
           
     ]
   },
