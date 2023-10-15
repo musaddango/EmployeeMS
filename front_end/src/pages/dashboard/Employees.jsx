@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
 
@@ -11,7 +11,6 @@ function Employees() {
         axios.get('http://localhost:4000/getEmployees')
         .then(res => 
             {if(res.statusText === 'OK'){
-                console.log(res.data)
                 setData(res.data);
             }})
         .catch(err=> console.log(err))
@@ -21,14 +20,15 @@ function Employees() {
         navigate('./create')
     }
 
-    const handleEdit = (event)=>{
-        event.preventDefault();
-        // action
-    }
+    // const handleEdit = (event)=>{
+    //     event.preventDefault();
+    //     // action
+    //     navigate('employee_edit/'+event.target.name)
+    // }
 
     const handleDelete = (event)=>{
         event.preventDefault();
-        
+
     }
 
     return (
@@ -67,20 +67,20 @@ function Employees() {
                                     <td>{emp.address}</td>
                                     <td>{emp.salary}</td>
                                     <td>
-                                        <button 
+                                        <Link 
+                                            to={'employee_edit/'+emp.id}
                                             className='btn btn-success m-1' 
-                                            name={emp.id} 
-                                            onClick={handleEdit}
+                                            name={emp.id}
                                         >
                                             Edit
-                                        </button>
-                                        <button 
+                                        </Link>
+                                        <Link 
                                             className='btn btn-danger m-1' 
                                             name={emp.id} 
                                             onClick={handleDelete}
                                         >
                                             Delete
-                                        </button>
+                                        </Link>
                                     </td>
                                 </tr>;
                             })}

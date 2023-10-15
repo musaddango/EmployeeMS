@@ -8,11 +8,11 @@ import multer from "multer";
 import path from "path";
 
 
-const db = knex({
+const db = knex({ 
     client: 'pg',
     connection: {
       host : 'localhost',
-      port : 5432,
+      port : 5432, 
       user : 'postgres',
       password : 'Musa12***',
       database : 'admin_dashboard_db'

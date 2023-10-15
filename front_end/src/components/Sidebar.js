@@ -11,7 +11,7 @@ import './Sidebar.css';
 
 
 function SideNavBar (props) {
- 
+
     const [isVisible, setIsVisible] = useState(true);
     const navigate = useNavigate();
     return (
@@ -42,6 +42,16 @@ function SideNavBar (props) {
             <NavText className='text'>Profile</NavText>
           </NavItem>
           <NavItem eventKey="employees" onClick={()=> navigate('./employees')}>
+            <NavIcon>
+              <i
+                className="fa fa-users"
+                style={{ fontSize: "1.5em" }}
+                aria-hidden="true"
+              />
+            </NavIcon>
+            <NavText className='text'>Employees</NavText>
+          </NavItem>
+          <NavItem eventKey="manage_employees" onClick={()=> navigate('./manage_employee')}>
             <NavIcon>
               <i
                 className="fa fa-users"

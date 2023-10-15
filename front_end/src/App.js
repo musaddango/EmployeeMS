@@ -8,22 +8,12 @@ import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
 import CreateAccount from './pages/dashboard/CreateAccount';
-import EditEmployee from './pages/dashboard/EditEmployee';
+import ManageEmployees from './pages/dashboard/ManageEmployees';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element:<Login />
-  },
-  {
-    path:'/register',
-    element: <Dashboard />,
-    children:[
-      {
-        path: 'userreg',
-        element: <CreateAccount />
-      }
-    ]
   },
   {
     path:'/dashboard',
@@ -32,7 +22,6 @@ const router = createBrowserRouter([
       {
         path: 'home',
         element: <Dashboardhome />,
-        index: true
       },
       {
         path: 'profile',
@@ -45,14 +34,13 @@ const router = createBrowserRouter([
           {
             path: 'create',
             element: <CreateAccount />
-          }  
+          },
         ]
       },
       {
-        path: 'employee_edit/:id',
-        element: <EditEmployee />
-      }
-          
+        path: 'manage_employee',
+        element: <ManageEmployees />
+      }  
     ]
   },
 ])
