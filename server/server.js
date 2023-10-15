@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import knex from 'knex';
 import cookieParser from "cookie-parser";
 import multer from "multer";
-import path from "path";
+import path from "path"; 
 
 
 const db = knex({ 

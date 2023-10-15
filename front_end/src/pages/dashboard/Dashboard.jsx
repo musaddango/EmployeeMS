@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
 import SideNavBar from "../../components/Sidebar";
 
+
 export default function Dashboard() {
   return (
-    <div className="">
+    <div>
       <div className='row d-flex'>
         <div className="col">
           <SideNavBar />

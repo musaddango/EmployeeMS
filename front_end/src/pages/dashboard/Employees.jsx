@@ -2,10 +2,47 @@ import React, {useState, useEffect} from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
+import './Employees.css';
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
+
 
 function Employees() {
-    const navigate = useNavigate();
     const [data, setData] = useState([]);
+    const [open, setOpen] = useState(false);
+
+    const onOpenModal = () => setOpen(true);
+    const onCloseModal = () => setOpen(false);
+    const [empDetails, setEmpDetails] = useState({
+                name:'',
+                email:'',
+                address:'',
+                password: '',
+                salary: null,
+                image: null
+            })
+    const [editDetails, setEditDetails] = useState({
+        email:'',
+        name:''
+    })
+
+    const handleSubmit = (event)=>{
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("name", empDetails.name);
+        formData.append("email", empDetails.email);
+        formData.append("address", empDetails.address);
+        formData.append("password", empDetails.password);
+        formData.append("image", empDetails.image);
+        formData.append("salary", empDetails.salary)
+
+        axios.post('http://localhost:4000/create', formData)
+        .catch(err => console.log(err));
+        onCloseModal();
+    }
+
+    // Toggle for Add Employee
+    // const [addEmp, setAddEmp] = useState(false);
 
     useEffect(()=>{
         axios.get('http://localhost:4000/getEmployees')
@@ -16,15 +53,10 @@ function Employees() {
         .catch(err=> console.log(err))
     },[])
 
-    const addEmployee = ()=>{
-        navigate('./create')
+    const addEmpModal = ()=>{
+        // navigate('./create');
     }
 
-    // const handleEdit = (event)=>{
-    //     event.preventDefault();
-    //     // action
-    //     navigate('employee_edit/'+event.target.name)
-    // }
 
     const handleDelete = (event)=>{
         event.preventDefault();
@@ -32,7 +64,9 @@ function Employees() {
     }
 
     return (
-        <div className='px-5 py-3'>
+
+        <>
+         <div className='px-5 py-3'>
             <div className='d-flex justify-content-center'>
                 <h3>Employee List</h3>
             </div>
@@ -67,13 +101,13 @@ function Employees() {
                                     <td>{emp.address}</td>
                                     <td>{emp.salary}</td>
                                     <td>
-                                        <Link 
-                                            to={'employee_edit/'+emp.id}
+                                        <button 
+                                            onClick={onOpenModal}
                                             className='btn btn-success m-1' 
                                             name={emp.id}
                                         >
                                             Edit
-                                        </Link>
+                                        </button>
                                         <Link 
                                             className='btn btn-danger m-1' 
                                             name={emp.id} 
@@ -89,14 +123,104 @@ function Employees() {
             </div>
             <hr />
             <button 
-                onClick={addEmployee} 
+                onClick={addEmpModal} 
                 className='btn btn-success'>
                     Add Employee
             </button>
-            <div>
+            <div> 
                 <Outlet />
             </div>
         </div>
+        {open && (
+        <Modal open={open} onClose={onCloseModal} center>
+             <div>
+                    <h3>Edit Your Profile</h3>
+                    <form onSubmit={handleSubmit} id="form">
+                        <div className="form-group p-2">
+                            <input 
+                                onChange={event=> setEmpDetails({...empDetails, name:event.target.value})}
+                                type="text" 
+                                name="name"
+                                className="form-control" 
+                                id="Name" 
+                                aria-describedby="address" 
+                                value={editDetails.name? editDetails.name : 'No name for now'} 
+                                autoComplete="on"
+                                style={{marginTop:"5px", marginBottom:"5px"}} 
+                                disabled
+                            />
+                        </div>
+                        <div className="form-group p-2">
+                            <input 
+                                onChange={event=> setEmpDetails({...empDetails, email: event.target.value})}                                    
+                                    type="email" 
+                                    name="email"
+                                    className="form-control" 
+                                    id="exampleInputEmail1" 
+                                    aria-describedby="emailHelp" 
+                                    value={editDetails.email? editDetails.email : 'No email for now'} 
+                                    autoComplete="on"
+                                    style={{marginTop:"5px", marginBottom:"5px"}} 
+                                    disabled
+                                />
+                            </div>
+                            <div className="form-group p-2">
+                                <input 
+                                    onChange={event=>setEmpDetails({...empDetails, salary:event.target.value})}
+                                    type="number" 
+                                    name="salary"
+                                    className="form-control" 
+                                    id="exampleInputSalary" 
+                                    placeholder="Employee Salary" 
+                                    autoComplete="on"
+                                    style={{marginTop:"5px", marginBottom:"5px"}} 
+                                />
+                            </div>
+                            <div className="form-group p-2">
+                                <input 
+                                    onChange={event=> setEmpDetails({...empDetails, address: event.target.value})}
+                                    type="text" 
+                                    name="address"
+                                    className="form-control" 
+                                    id="address" 
+                                    aria-describedby="address" 
+                                    placeholder="Enter address"
+                                    autoComplete="no" 
+                                    style={{marginTop:"5px", marginBottom:"5px"}} 
+                                />
+                            </div>
+                            <div className="form-group p-2">
+                                <input 
+                                    onChange={event => setEmpDetails({...empDetails, password: event.target.value})}
+                                    type="password" 
+                                    name="password"
+                                    className="form-control" 
+                                    id="exampleInputPassword1" 
+                                    placeholder="Password"
+                                    autoComplete="new-password" 
+                                    style={{marginTop:"5px", marginBottom:"5px"}} 
+                                />
+                            </div>
+                            <div className="form-group d-flex justify-content-start p-2">
+                                <input 
+                                    onChange={event=> setEmpDetails({...empDetails, image:event.target.files[0]})}
+                                    type="file" 
+                                    name="image" 
+                                    accept="image/*" 
+                                />
+                            </div>
+
+                            <button 
+                                type="submit" 
+                                className="btn btn-success" 
+                                style={{marginTop:"5px", marginBottom:"5px"}}>
+                                    Edit Details
+                            </button>
+                        </form>
+                    </div>
+            </Modal>)}
+        </>
+        
     );
 }
 
