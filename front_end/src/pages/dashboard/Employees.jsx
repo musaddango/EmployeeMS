@@ -38,7 +38,7 @@ function Employees() {
     const onEdit = (event)=>{
         event.preventDefault();
 
-        axios.post('http://localhost:4000/edit_details',{id:event.target.name})
+        axios.post('http://localhost:4000/user_details',{id:event.target.name})
         .then(data=> setEditDetails({
                 id: data.data[0].id,
                 name:data.data[0].name,
@@ -64,11 +64,18 @@ function Employees() {
     const [delID, setDelID] = useState('');
     const onOpenDelModal = () => setDel(true);
     const onCloseDelModal = () => setDel(false);
+    const [delName, setDelName] = useState('');
 
     const delToggle = (event)=>{
         event.preventDefault();
         onOpenDelModal();
         setDelID(event.target.name);
+        
+        //Fetch and set Employee Delete name 
+        axios.post('http://localhost:4000/user_details', {id: event.target.name})
+        .then(data=> setDelName(data.data[0].name))
+        .catch((data)=> console.log('Error setting name'))
+        
     }
     
     // Create
@@ -265,18 +272,16 @@ function Employees() {
         {/* Delete Modal Section */}
             {del && (
                 <Modal open={del} onClose={onCloseDelModal} center>
-                    <Delete id={delID} />
+                    <Delete id={delID} name={delName} closeModal={onCloseDelModal} />
                 </Modal>
             )}
 
         {/* Create Modal Section */}
         {create && (
             <Modal open={create} onClose={onCloseCreateModal} center style={{width: 60+"%"}}>
-       
                 <h3>Create Employee</h3>
                 <CreateAccount />
-     
-        </Modal>
+            </Modal>
         )}
         </>
         

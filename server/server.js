@@ -80,7 +80,7 @@ app.get('/getEmployees', (req, res)=>{
   .catch(err=> res.json(`Error getting employee data`))
 })
 
-app.post('/edit_details', (req, res)=>{
+app.post('/user_details', (req, res)=>{
   const {id} = req.body;
   db.select('*')
   .from('employees')
@@ -106,8 +106,8 @@ app.post('/edit', (req, res)=>{
     address: address,
     password: result
   })  
-  .then(()=> console.log(`Edit success`))
-  .catch(err=> console.log(`Unsuccessful... check the knex syntax again`))
+  .then(()=> console.log(`fetching user details success`))
+  .catch(err=> console.log(`Failed to get user details.`))
   })
   
 })
@@ -116,10 +116,10 @@ app.post('/delete', (req, res)=>{
   const { id } = req.body;
   db
   .from('employees')
-  .where('ID', id)
+  .where('id', id)
   .del()
-  .then(()=> console.log(`Employee with ID ${id} was successfully deleted.`))
-  .catch((err)=> res.json(`Error deleting employee with ID ${id}`))
+  .then(()=> res.json(`success`))
+  .catch((err)=> res.json('error'))
 })
 
 const port = 4000;
