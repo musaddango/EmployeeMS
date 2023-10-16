@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
 import './Employees.css';
@@ -22,9 +22,31 @@ function Employees() {
                 image: null
             })
     const [editDetails, setEditDetails] = useState({
+        name:'',
         email:'',
-        name:''
+        address:'',
+        password: '',
+        salary: null,
+        image: null
     })
+
+    // Edit Details Function
+    const onEdit = (event)=>{
+        event.preventDefault();
+
+        axios.post('http://localhost:4000/edit',{id:event.target.name})
+        .then(data=> setEditDetails({name:data.data[0].name,
+                                     email: data.data[0].email,
+                                     address:data.data[0].address,
+                                     password: data.data[0].password,
+                                     salary: data.data[0].salary,
+                                     image: data.data[0].name.image
+                                        })
+        )
+        .then(data => onOpenModal())
+        .catch(err => console.log(`Fetch to edit route failed`))
+    }
+
 
     const handleSubmit = (event)=>{
         event.preventDefault();
@@ -41,8 +63,6 @@ function Employees() {
         onCloseModal();
     }
 
-    // Toggle for Add Employee
-    // const [addEmp, setAddEmp] = useState(false);
 
     useEffect(()=>{
         axios.get('http://localhost:4000/getEmployees')
@@ -56,7 +76,6 @@ function Employees() {
     const addEmpModal = ()=>{
         // navigate('./create');
     }
-
 
     const handleDelete = (event)=>{
         event.preventDefault();
@@ -102,7 +121,7 @@ function Employees() {
                                     <td>{emp.salary}</td>
                                     <td>
                                         <button 
-                                            onClick={onOpenModal}
+                                            onClick={onEdit}
                                             className='btn btn-success m-1' 
                                             name={emp.id}
                                         >
@@ -131,14 +150,15 @@ function Employees() {
                 <Outlet />
             </div>
         </div>
+        {/* Modal Section */}
         {open && (
-        <Modal open={open} onClose={onCloseModal} center>
-             <div>
+            <Modal open={open} onClose={onCloseModal} center>
+                <div>
                     <h3>Edit Your Profile</h3>
                     <form onSubmit={handleSubmit} id="form">
                         <div className="form-group p-2">
                             <input 
-                                onChange={event=> setEmpDetails({...empDetails, name:event.target.value})}
+                                onChange={event=> setEditDetails({...editDetails, name:event.target.value})}
                                 type="text" 
                                 name="name"
                                 className="form-control" 
@@ -152,7 +172,7 @@ function Employees() {
                         </div>
                         <div className="form-group p-2">
                             <input 
-                                onChange={event=> setEmpDetails({...empDetails, email: event.target.value})}                                    
+                                onChange={event=> setEditDetails({...editDetails, email: event.target.value})}                                    
                                     type="email" 
                                     name="email"
                                     className="form-control" 
@@ -166,49 +186,49 @@ function Employees() {
                             </div>
                             <div className="form-group p-2">
                                 <input 
-                                    onChange={event=>setEmpDetails({...empDetails, salary:event.target.value})}
+                                    onChange={event=>setEditDetails({...editDetails, salary:event.target.value})}
                                     type="number" 
                                     name="salary"
                                     className="form-control" 
                                     id="exampleInputSalary" 
-                                    placeholder="Employee Salary" 
+                                    value={editDetails.salary} 
                                     autoComplete="on"
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />
                             </div>
                             <div className="form-group p-2">
                                 <input 
-                                    onChange={event=> setEmpDetails({...empDetails, address: event.target.value})}
+                                    onChange={event=> setEditDetails({...editDetails, address: event.target.value})}
                                     type="text" 
                                     name="address"
                                     className="form-control" 
                                     id="address" 
                                     aria-describedby="address" 
-                                    placeholder="Enter address"
+                                    value={editDetails.address}
                                     autoComplete="no" 
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />
                             </div>
                             <div className="form-group p-2">
                                 <input 
-                                    onChange={event => setEmpDetails({...empDetails, password: event.target.value})}
+                                    onChange={event => setEditDetails({...editDetails, password: event.target.value})}
                                     type="password" 
                                     name="password"
                                     className="form-control" 
                                     id="exampleInputPassword1" 
-                                    placeholder="Password"
+                                    placeholder="Enter new password"
                                     autoComplete="new-password" 
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />
                             </div>
-                            <div className="form-group d-flex justify-content-start p-2">
+                            {/* <div className="form-group d-flex justify-content-start p-2">
                                 <input 
-                                    onChange={event=> setEmpDetails({...empDetails, image:event.target.files[0]})}
+                                    onChange={event=> setEditDetails({...editDetails, image:event.target.files[0]})}
                                     type="file" 
                                     name="image" 
                                     accept="image/*" 
                                 />
-                            </div>
+                            </div> */}
 
                             <button 
                                 type="submit" 

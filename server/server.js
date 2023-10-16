@@ -81,6 +81,15 @@ app.get('/getEmployees', (req, res)=>{
   .catch(err=> res.json(`Error getting employee data`))
 })
 
+app.post('/edit', (req, res)=>{
+  const {id} = req.body;
+  db.select('*')
+  .from('employees')
+  .where('id', id)
+  .then(data=> res.json(data))
+  .catch(err=>res.json(`Error accessing employee data`))
+})
+
 const port = 4000;
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}`)
