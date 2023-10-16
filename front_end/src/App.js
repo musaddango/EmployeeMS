@@ -7,7 +7,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
-import CreateAccount from './pages/dashboard/CreateAccount';
+import CreateAccount from './pages/dashboard/modals/CreateAccount';
 import ManageEmployees from './pages/dashboard/ManageEmployees';
 
 const router = createBrowserRouter([

@@ -110,8 +110,16 @@ app.post('/edit', (req, res)=>{
   .catch(err=> console.log(`Unsuccessful... check the knex syntax again`))
   })
   
+})
 
-
+app.post('/delete', (req, res)=>{
+  const { id } = req.body;
+  db
+  .from('employees')
+  .where('ID', id)
+  .del()
+  .then(()=> console.log(`Employee with ID ${id} was successfully deleted.`))
+  .catch((err)=> res.json(`Error deleting employee with ID ${id}`))
 })
 
 const port = 4000;

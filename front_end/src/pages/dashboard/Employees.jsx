@@ -1,16 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
 import './Employees.css';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
+import CreateAccount from './modals/CreateAccount';
+import Delete from './modals/Delete';
 
 
 function Employees() {
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
 
+    // Edit Modal
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
     const [empDetails, setEmpDetails] = useState({
@@ -56,7 +59,24 @@ function Employees() {
         .then(data=> console.log(data))
     }
 
+    // Delete
+    const [del, setDel] = useState(false);
+    const [delID, setDelID] = useState('');
+    const onOpenDelModal = () => setDel(true);
+    const onCloseDelModal = () => setDel(false);
 
+    const delToggle = (event)=>{
+        event.preventDefault();
+        onOpenDelModal();
+        setDelID(event.target.name);
+    }
+    
+    // Create
+    const [create, setCreate] = useState(false);
+    const onOpenCreateModal = () => setCreate(true);
+    const onCloseCreateModal = () => setCreate(false);
+
+    // Creation Function
     const handleSubmit = (event)=>{
         event.preventDefault();
         const formData = new FormData();
@@ -86,9 +106,10 @@ function Employees() {
         // navigate('./create');
     }
 
+
     const handleDelete = (event)=>{
         event.preventDefault();
-
+        axios.post('http://localhost:4000/delete',)
     }
 
     return (
@@ -104,6 +125,7 @@ function Employees() {
                 <table className='table'>
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Image</th>
                             <th>Email</th>
@@ -136,13 +158,13 @@ function Employees() {
                                         >
                                             Edit
                                         </button>
-                                        <Link 
+                                        <button 
                                             className='btn btn-danger m-1' 
                                             name={emp.id} 
-                                            onClick={handleDelete}
+                                            onClick={delToggle}
                                         >
                                             Delete
-                                        </Link>
+                                        </button>
                                     </td>
                                 </tr>;
                             })}
@@ -151,7 +173,7 @@ function Employees() {
             </div>
             <hr />
             <button 
-                onClick={addEmpModal} 
+                onClick={onOpenCreateModal} 
                 className='btn btn-success'>
                     Add Employee
             </button>
@@ -159,7 +181,7 @@ function Employees() {
                 <Outlet />
             </div>
         </div>
-        {/* Modal Section */}
+        {/* Edit Modal Section */}
         {open && (
             <Modal open={open} onClose={onCloseModal} center>
                 <div>
@@ -228,14 +250,6 @@ function Employees() {
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />
                             </div>
-                            {/* <div className="form-group d-flex justify-content-start p-2">
-                                <input 
-                                    onChange={event=> setEditDetails({...editDetails, image:event.target.files[0]})}
-                                    type="file" 
-                                    name="image" 
-                                    accept="image/*" 
-                                />
-                            </div> */}
 
                             <button 
                                 onClick={submitEdit}
@@ -247,6 +261,23 @@ function Employees() {
                         </form>
                     </div>
             </Modal>)}
+
+        {/* Delete Modal Section */}
+            {del && (
+                <Modal open={del} onClose={onCloseDelModal} center>
+                    <Delete id={delID} />
+                </Modal>
+            )}
+
+        {/* Create Modal Section */}
+        {create && (
+            <Modal open={create} onClose={onCloseCreateModal} center style={{width: 60+"%"}}>
+       
+                <h3>Create Employee</h3>
+                <CreateAccount />
+     
+        </Modal>
+        )}
         </>
         
     );

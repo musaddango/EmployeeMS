@@ -109,9 +109,7 @@ function CreateAccount({ display }) {
                                 style={{marginTop:"5px", marginBottom:"5px"}}>
                                     Create Employee
                             </button>
-                            <button className="close-modal" onClick={display}>
-                                Close
-                            </button>
+                            
                         </form>
                     </div>
             )
