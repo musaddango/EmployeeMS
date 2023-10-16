@@ -22,6 +22,7 @@ function Employees() {
                 image: null
             })
     const [editDetails, setEditDetails] = useState({
+        id: null,
         name:'',
         email:'',
         address:'',
@@ -34,17 +35,25 @@ function Employees() {
     const onEdit = (event)=>{
         event.preventDefault();
 
-        axios.post('http://localhost:4000/edit',{id:event.target.name})
-        .then(data=> setEditDetails({name:data.data[0].name,
-                                     email: data.data[0].email,
-                                     address:data.data[0].address,
-                                     password: data.data[0].password,
-                                     salary: data.data[0].salary,
-                                     image: data.data[0].name.image
-                                        })
+        axios.post('http://localhost:4000/edit_details',{id:event.target.name})
+        .then(data=> setEditDetails({
+                id: data.data[0].id,
+                name:data.data[0].name,
+                email: data.data[0].email,
+                address:data.data[0].address,
+                password: data.data[0].password,
+                salary: data.data[0].salary,
+                image: data.data[0].name.image
+                            })
         )
         .then(data => onOpenModal())
         .catch(err => console.log(`Fetch to edit route failed`))
+    }
+
+    const submitEdit = (event)=>{
+        event.preventDefault();
+        axios.post('http://localhost:4000/edit',editDetails)
+        .then(data=> console.log(data))
     }
 
 
@@ -164,10 +173,9 @@ function Employees() {
                                 className="form-control" 
                                 id="Name" 
                                 aria-describedby="address" 
-                                value={editDetails.name? editDetails.name : 'No name for now'} 
+                                value={editDetails.name} 
                                 autoComplete="on"
-                                style={{marginTop:"5px", marginBottom:"5px"}} 
-                                disabled
+                                style={{marginTop:"5px", marginBottom:"5px"}}
                             />
                         </div>
                         <div className="form-group p-2">
@@ -178,10 +186,9 @@ function Employees() {
                                     className="form-control" 
                                     id="exampleInputEmail1" 
                                     aria-describedby="emailHelp" 
-                                    value={editDetails.email? editDetails.email : 'No email for now'} 
+                                    value={editDetails.email} 
                                     autoComplete="on"
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
-                                    disabled
                                 />
                             </div>
                             <div className="form-group p-2">
@@ -231,6 +238,7 @@ function Employees() {
                             </div> */}
 
                             <button 
+                                onClick={submitEdit}
                                 type="submit" 
                                 className="btn btn-success" 
                                 style={{marginTop:"5px", marginBottom:"5px"}}>

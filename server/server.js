@@ -7,7 +7,6 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path"; 
 
-
 const db = knex({ 
     client: 'pg',
     connection: {
@@ -81,13 +80,38 @@ app.get('/getEmployees', (req, res)=>{
   .catch(err=> res.json(`Error getting employee data`))
 })
 
-app.post('/edit', (req, res)=>{
+app.post('/edit_details', (req, res)=>{
   const {id} = req.body;
   db.select('*')
   .from('employees')
   .where('id', id)
   .then(data=> res.json(data))
   .catch(err=>res.json(`Error accessing employee data`))
+
+})
+
+app.post('/edit', (req, res)=>{
+  const { name, email, salary, address, password, id } = req.body;
+
+  bcrypt.hash(password, 10, (err, result)=>{
+    if(err) return res.json('Error updating password.');
+
+  db
+  .from('employees')
+  .where('id', id)
+  .update({ 
+    name: name,
+    salary: salary,
+    email: email,
+    address: address,
+    password: result
+  })  
+  .then(()=> console.log(`Edit success`))
+  .catch(err=> console.log(`Unsuccessful... check the knex syntax again`))
+  })
+  
+
+
 })
 
 const port = 4000;
