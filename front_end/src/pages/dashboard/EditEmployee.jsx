@@ -1,38 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from 'axios';
 
-function EditEmployee({ id }) {
+function EditEmployee({ data, closeModal }) {
    
+    const [editDetails, setEditDetails] = useState(data);
+
     const submitEdit = (event)=>{
         event.preventDefault();
         axios.post('http://localhost:4000/edit',editDetails)
-        .then(data=> console.log(data))
+        .then((data)=> {
+            if (data.data === "success"){
+                closeModal()
+            }
+        })
+        .catch((err)=> console.log(`Error: error making client side request`))
     }
-// Edit Modal
-const [editDetails, setEditDetails] = useState({
-    name:'',
-    email:'',
-    address:'',
-    password: '',
-    salary: '',
-})
-
-// Fetch the data to be of the employer to be edited
-useEffect(()=>{
-    axios.post('http://localhost:4000/user_details',{id: id})
-    .then(data=> setEditDetails({
-            id: data.data[0].id,
-            name:data.data[0].name,
-            email: data.data[0].email,
-            address:data.data[0].address,
-            password: data.data[0].password,
-            salary: data.data[0].salary,
-                        })
-    )
-    .catch(err => console.log(`Fetch to edit route failed`))
-})
-
-
     
     return (
                 <div>
@@ -46,7 +28,7 @@ useEffect(()=>{
                                 className="form-control" 
                                 id="name" 
                                 aria-describedby="address" 
-                                placeholder={editDetails.name} 
+                                value={editDetails.name} 
                                 autoComplete="on"
                                 style={{marginTop:"5px", marginBottom:"5px"}}
                                 disabled
@@ -60,7 +42,7 @@ useEffect(()=>{
                                     className="form-control" 
                                     id="exampleInputEmail1" 
                                     aria-describedby="emailHelp" 
-                                    placeholder={editDetails.email} 
+                                    value={editDetails.email} 
                                     autoComplete="on"
                                     style={{marginTop:"5px", marginBottom:"5px"}}
                                     disabled 
@@ -73,7 +55,7 @@ useEffect(()=>{
                                     name="salary"
                                     className="form-control" 
                                     id="exampleInputSalary" 
-                                    placeholder={editDetails.salary} 
+                                    value={editDetails.salary} 
                                     autoComplete="on"
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />
@@ -86,7 +68,7 @@ useEffect(()=>{
                                     className="form-control" 
                                     id="address" 
                                     aria-describedby="address" 
-                                    placeholder={editDetails.address}
+                                    value={editDetails.address}
                                     autoComplete="no" 
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />
@@ -98,7 +80,7 @@ useEffect(()=>{
                                     name="password"
                                     className="form-control" 
                                     id="exampleInputPassword1" 
-                                    placeholder="New employee password"
+                                    placeholder="Enter new employee password (optional)"
                                     autoComplete="new-password" 
                                     style={{marginTop:"5px", marginBottom:"5px"}} 
                                 />

@@ -5,7 +5,9 @@ function Delete({ id, name, closeModal }) {
 
     const del = ()=>{
         axios.post('http://localhost:4000/delete', {id: id})
-        .then((data)=> {if(data.data === 'success'){
+        .then((data)=> {
+            console.log(data);
+            if(data.data === 'delete success'){
             closeModal();
         }})
         .catch(err=> console.log(`Error deleting an employee`))

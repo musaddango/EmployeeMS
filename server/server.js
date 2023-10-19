@@ -93,24 +93,39 @@ app.post('/user_details', (req, res)=>{
 app.post('/edit', (req, res)=>{
   const { name, email, salary, address, password, id } = req.body;
 
-  bcrypt.hash(password, 10, (err, result)=>{
-    if(err) return res.json('Error updating password.');
-
-  db
-  .from('employees')
-  .where('id', id)
-  .update({ 
-    name: name,
-    salary: salary,
-    email: email,
-    address: address,
-    password: result
-  })  
-  .then(()=> console.log(`fetching user details success`))
-  .catch(err=> console.log(`Failed to get user details.`))
+  if(password){
+    bcrypt.hash(password, 10, (err, result)=>{
+      if(err) return res.json('Error updating password.');
+    db
+    .from('employees')
+    .where('id', id)
+    .update({ 
+      name: name,
+      salary: salary,
+      email: email,
+      address: address,
+      password: result
+    })  
+    .then(()=>{ 
+      res.json(`success`);
   })
-  
-})
+    .catch(err=> console.log(`Failed to update user details.`))
+    })
+  }else{
+    db
+    .from('employees')
+    .where('id', id)
+    .update({ 
+      name: name,
+      salary: salary,
+      email: email,
+      address: address,
+    })  
+    .then(()=> console.log(`user details updated`))
+    .catch(err=> console.log(`Failed to update user details.`))
+    }
+  })
+
 
 app.post('/delete', (req, res)=>{
   const { id } = req.body;
@@ -118,8 +133,8 @@ app.post('/delete', (req, res)=>{
   .from('employees')
   .where('id', id)
   .del()
-  .then(()=> res.json(`success`))
-  .catch((err)=> res.json('error'))
+  .then(()=> res.json(`delete success`))
+  .catch((err)=> res.json('delete error'))
 })
 
 const port = 4000;

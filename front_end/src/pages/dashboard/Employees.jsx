@@ -15,16 +15,38 @@ function Employees() {
     const [open, setOpen] = useState(false);
 
     // Edit Modal
-    const [editId, setEditId] = useState('');
     const onOpenModal = (event) => {
         event.preventDefault();
-        setEditId(event.target.name);
-        setOpen(true)
+        getEditDetails(event);
     };
     const onCloseModal = () => setOpen(false);
+    const [editDetails, setEditDetails] = useState({
+        name:'',
+        email:'',
+        address:'',
+        password: '',
+        salary: '',
+    })
 
-
-
+    // Fetch the data to be of the employer to be edited
+    const getEditDetails = (event)=>{
+        axios.post('http://localhost:4000/user_details',{id: event.target.name})
+        .then(data=> {
+            if(data.statusText==="OK"){
+                setEditDetails({
+                    id: data.data[0].id,
+                    name:data.data[0].name,
+                    email: data.data[0].email,
+                    address:data.data[0].address,
+                    password: data.data[0].password,
+                    salary: data.data[0].salary,
+                                })
+                    
+            }
+        })
+        .then(()=> setOpen(true))
+        .catch(err => console.log(`Fetch to edit route failed`))
+    }
 
     // Delete
     const [del, setDel] = useState(false);
@@ -131,7 +153,7 @@ function Employees() {
         {/* Edit Modal Section */}
         {open && (
                 <Modal open={open} onClose={onCloseModal} center>
-                    <EditEmployee id={editId}/>
+                    <EditEmployee data = {editDetails} closeModal={onCloseModal} />
                 </Modal>
                 )}
 
