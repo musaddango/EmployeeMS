@@ -8,7 +8,6 @@ import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
 import CreateAccount from './pages/dashboard/modals/CreateAccount';
-import ManageEmployees from './pages/dashboard/ManageEmployees';
 
 const router = createBrowserRouter([
   {
@@ -37,10 +36,6 @@ const router = createBrowserRouter([
           },
         ]
       },
-      {
-        path: 'manage_employee',
-        element: <ManageEmployees />
-      }  
     ]
   },
 ])

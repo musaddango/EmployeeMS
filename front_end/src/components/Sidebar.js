@@ -51,16 +51,6 @@ function SideNavBar (props) {
             </NavIcon>
             <NavText className='text'>Employees</NavText>
           </NavItem>
-          <NavItem eventKey="manage_employees" onClick={()=> navigate('./manage_employee')}>
-            <NavIcon>
-              <i
-                className="fa fa-users"
-                style={{ fontSize: "1.5em" }}
-                aria-hidden="true"
-              />
-            </NavIcon>
-            <NavText className='text'>Manage Employees</NavText>
-          </NavItem>
           <NavItem eventKey="logout" onClick={()=> navigate('/')}>
             <NavIcon>
               <i
