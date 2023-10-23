@@ -11,11 +11,11 @@ import './Sidebar.css';
 
 
 function SideNavBar (props) {
- 
-    const [isVisible, setIsVisible] = useState(true);
+
+    const [isVisible, setIsVisible] = useState(false);
     const navigate = useNavigate();
     return (
-      <SideNav  defaultExpanded expanded={isVisible} style={{backgroundColor: 'rgb(79, 55, 222)'}}>
+      <SideNav   className='bg-success'>
         <SideNav.Toggle
           onClick={() => {
             setIsVisible(!isVisible);
@@ -49,7 +49,7 @@ function SideNavBar (props) {
                 aria-hidden="true"
               />
             </NavIcon>
-            <NavText className='text'>Manage Employees</NavText>
+            <NavText className='text'>Employees</NavText>
           </NavItem>
           <NavItem eventKey="logout" onClick={()=> navigate('/')}>
             <NavIcon>

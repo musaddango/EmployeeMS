@@ -1,4 +1,3 @@
-// import { useState } from 'react';
 import './App.css';
 import {createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -8,22 +7,12 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
-import CreateAccount from './pages/dashboard/CreateAccount';
+import CreateAccount from './pages/dashboard/modals/CreateAccount';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element:<Login />
-  },
-  {
-    path:'/register',
-    element: <Dashboard />,
-    children:[
-      {
-        path: 'userreg',
-        element: <CreateAccount />
-      }
-    ]
   },
   {
     path:'/dashboard',
@@ -44,10 +33,9 @@ const router = createBrowserRouter([
           {
             path: 'create',
             element: <CreateAccount />
-          }  
+          },
         ]
       },
-          
     ]
   },
 ])
