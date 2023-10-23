@@ -12,10 +12,10 @@ import './Sidebar.css';
 
 function SideNavBar (props) {
 
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
     const navigate = useNavigate();
     return (
-      <SideNav  defaultExpanded  className='bg-success'>
+      <SideNav   className='bg-success'>
         <SideNav.Toggle
           onClick={() => {
             setIsVisible(!isVisible);

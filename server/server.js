@@ -56,6 +56,11 @@ app.post('/login', (req, res)=>{
 app.post('/create', upload.single('image'), (req, res)=>{ 
     const {name, email, address, password, salary} = req.body;
 
+    if (!name || !email || !password){
+      console.log(`some of the employee field(s) are empty.`)
+      return res.json(`some of the employee field(s) are empty.`)
+    }
+
     bcrypt.hash(password.toString(), 10, (err, result)=>{
     if(err) return res.json(`There was an error storing data`);
       db('employees').insert({
@@ -67,8 +72,14 @@ app.post('/create', upload.single('image'), (req, res)=>{
         image: req.file.filename
       })
       .returning('name')
-      .then(res => console.log(`Congratulations. ${name}'s registration was successful`))
-      .catch(err => console.log(`Error Registering Employee.`))
+      .then(() =>{ 
+        console.log(`Congratulations. ${name}'s registration was successful`);
+        return res.json(`success`)
+      })
+      .catch(err =>{ 
+        console.log(`Error Registering Employee.`);
+        return res.json(`Error`);
+      })
     }
   )
 })
@@ -107,7 +118,7 @@ app.post('/edit', (req, res)=>{
       password: result
     })  
     .then(()=>{ 
-      res.json(`success`);
+      res.json(`success`); 
   })
     .catch(err=> console.log(`Failed to update user details.`))
     })

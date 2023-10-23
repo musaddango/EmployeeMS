@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 function CreateAccount({ display }) {
     const [empDetails, setEmpDetails] = useState({
@@ -12,7 +11,6 @@ function CreateAccount({ display }) {
         image: null
     })
 
-    const navigate = useNavigate();
 
     const handleSubmit = (event)=>{
         event.preventDefault();
@@ -25,8 +23,13 @@ function CreateAccount({ display }) {
         formData.append("salary", empDetails.salary)
 
         axios.post('http://localhost:4000/create', formData)
-        .catch(err => console.log(err));
-        navigate(-1)
+        .then((data)=> {
+            data.data === "success"? window.location.reload(true): new Error();
+            display();
+            window.location.reload();
+        })
+        .catch(err => new Error(`Error: ${err}`));
+        
     }
 
     return(

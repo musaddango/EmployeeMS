@@ -152,9 +152,12 @@ function Employees() {
         </div>
         {/* Edit Modal Section */}
         {open && (
-                <Modal open={open} onClose={onCloseModal} center>
-                    <EditEmployee data = {editDetails} closeModal={onCloseModal} />
-                </Modal>
+                
+                    <Modal open={open} onClose={onCloseModal} center>
+                        <div style={{width: 600+"px"}}></div>
+                        <EditEmployee data = {editDetails} closeModal={onCloseModal} />
+                    </Modal>
+                
                 )}
 
         {/* Delete Modal Section */}
@@ -167,8 +170,9 @@ function Employees() {
         {/* Create Modal Section */}
         {create && (
             <Modal open={create} onClose={onCloseCreateModal} center style={{width: 60+"%"}}>
+                <div style={{width: 600+"px"}}></div>
                 <h3>Create Employee</h3>
-                <CreateAccount />
+                <CreateAccount display={onCloseCreateModal} />
             </Modal>
         )}
         </>

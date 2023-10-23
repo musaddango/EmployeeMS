@@ -10,6 +10,7 @@ function Delete({ id, name, closeModal }) {
             if(data.data === 'delete success'){
             closeModal();
         }})
+        .then(()=> window.location.reload(true))
         .catch(err=> console.log(`Error deleting an employee`))
     }
 

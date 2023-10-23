@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from 'axios';
 
 function EditEmployee({ data, closeModal }) {
-   
+
     const [editDetails, setEditDetails] = useState(data);
 
     const submitEdit = (event)=>{
@@ -10,7 +10,8 @@ function EditEmployee({ data, closeModal }) {
         axios.post('http://localhost:4000/edit',editDetails)
         .then((data)=> {
             if (data.data === "success"){
-                closeModal()
+                closeModal();
+                window.location.reload();
             }
         })
         .catch((err)=> console.log(`Error: error making client side request`))
