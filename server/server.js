@@ -20,7 +20,10 @@ const db = knex({
 const app = express();
 
 // Middlewares 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
@@ -44,9 +47,14 @@ app.post('/login', (req, res)=>{
       )      
       .then(data => {
         if(data.length > 0){
-          res.json({status: 'success', data: data[0]});
+
+          const id = data[0].id;
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: "1d"});
+          res.cache("token", token);
+          console.log(token);
+          return res.json({status: 'success', data: data[0]});
         }else{
-          res.json({status: 'error', error: 'Email or password invalid'}); 
+          return res.json({status: 'error', error: 'Email or password invalid'}); 
         }
 
       })
@@ -138,8 +146,8 @@ app.post('/edit', (req, res)=>{
   })
 
 
-app.post('/delete', (req, res)=>{
-  const { id } = req.body;
+app.delete('/delete/:id', (req, res)=>{
+  const { id } = req.params;
   db
   .from('employees')
   .where('id', id)

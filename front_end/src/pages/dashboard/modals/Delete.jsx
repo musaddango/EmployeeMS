@@ -4,14 +4,14 @@ import axios from "axios";
 function Delete({ id, name, closeModal }) {
 
     const del = ()=>{
-        axios.post('http://localhost:4000/delete', {id: id})
+        axios.delete('http://localhost:4000/delete/'+id)
         .then((data)=> {
             console.log(data);
             if(data.data === 'delete success'){
             closeModal();
         }})
         .then(()=> window.location.reload(true))
-        .catch(err=> console.log(`Error deleting an employee`))
+        .catch(err=> new Error(`Error deleting an employee`))
     }
 
     return (

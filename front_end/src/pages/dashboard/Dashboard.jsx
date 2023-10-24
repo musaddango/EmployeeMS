@@ -1,8 +1,19 @@
 import { Outlet } from "react-router-dom";
 import SideNavBar from "../../components/Sidebar";
+import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 export default function Dashboard() {
+// const navigate = useNavigate();
+
+  useEffect(()=>{
+    axios.get("http://localhost:4000/dashboard")
+    .then(res => {
+      console.log(res);
+    })
+  },[])
   return (
     <div>
       <div className='row d-flex'>
