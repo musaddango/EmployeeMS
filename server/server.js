@@ -40,17 +40,20 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 app.post('/login', (req, res)=>{
+    const {email, password } = req.body;
     db.select('*')
       .from('login')
-      .where({email: req.body.email,
-               password: req.body.password}
+      .where({email: email,
+               password: password}
       )      
       .then(data => {
         if(data.length > 0){
 
           const id = data[0].id;
+          
+          // JWT Sign
           const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: "1d"});
-          res.cache("token", token);
+          res.cookie("token", token);
           console.log(token);
           return res.json({status: 'success', data: data[0]});
         }else{
@@ -58,7 +61,24 @@ app.post('/login', (req, res)=>{
         }
 
       })
-      .catch(err => console.log('Error'));
+      .catch(err => res.json('Error'));
+})
+
+function verify(req, res, next){
+  const token = req.cookies.token;
+  if (!token){
+    return res.json({Error: `Verification error`})
+  }
+  else{
+      jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
+      if(err) return res.json(`You do not have access to this resources`);
+      next();
+    })
+  }
+}
+ 
+app.get('/dashboard',verify, (req, res)=>{
+    res.json(`Dashboard endpoint can be seen.`)
 })
 
 app.post('/create', upload.single('image'), (req, res)=>{ 
@@ -140,11 +160,10 @@ app.post('/edit', (req, res)=>{
       email: email,
       address: address,
     })  
-    .then(()=> console.log(`user details updated`))
+    .then(()=> res.json(`success`))
     .catch(err=> console.log(`Failed to update user details.`))
     }
   })
-
 
 app.delete('/delete/:id', (req, res)=>{
   const { id } = req.params;
@@ -155,6 +174,7 @@ app.delete('/delete/:id', (req, res)=>{
   .then(()=> res.json(`delete success`))
   .catch((err)=> res.json('delete error'))
 })
+
 
 const port = 4000;
 app.listen(port, ()=>{

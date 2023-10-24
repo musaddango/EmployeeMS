@@ -63,6 +63,7 @@ function Login() {
     }
     axios.post('http://localhost:4000/login', data)
     .then(res => {
+        console.log(res);
         if(res.data.status==='success'){
           navigate('/dashboard/home');
           setError('');
