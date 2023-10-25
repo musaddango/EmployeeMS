@@ -112,14 +112,14 @@ app.post('/create', upload.single('image'), (req, res)=>{
   )
 })
 
-app.get('/getEmployees', (req, res)=>{
+app.get('/getEmployees', verifyUser, (req, res)=>{
   db.select('*')
   .from('employees')
   .then(data=> res.json(data)) 
   .catch(err=> res.json(`Error getting employee data`))
 })
 
-app.post('/user_details', (req, res)=>{
+app.post('/user_details', verifyUser, (req, res)=>{
   const {id} = req.body;
   db.select('*')
   .from('employees')
@@ -129,7 +129,7 @@ app.post('/user_details', (req, res)=>{
 
 })
 
-app.post('/edit', (req, res)=>{
+app.post('/edit', verifyUser, (req, res)=>{
   const { name, email, salary, address, password, id } = req.body;
 
   if(password){
@@ -165,7 +165,7 @@ app.post('/edit', (req, res)=>{
     }
   })
 
-app.delete('/delete/:id', (req, res)=>{
+app.delete('/delete/:id', verifyUser, (req, res)=>{
   const { id } = req.params;
   db
   .from('employees')

@@ -70,7 +70,10 @@ function Login() {
       }else{
           setError(res.data.error);
       }
-  });
+  })
+  .catch(err=> {
+    throw new Error('Fail to login')
+  })
   }
     
     return (

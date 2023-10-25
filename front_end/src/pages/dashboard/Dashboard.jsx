@@ -12,10 +12,8 @@ axios.defaults.withCredentials = true;
   useEffect(()=>{
     axios.get("http://localhost:4000/dashboard")
     .then(res => {
-      if(res.data){
-        navigate('/dashboard')
-      }else{
-        navigate('./login')
+      if(!res.data){
+        navigate('/')
       }
     })
   })
