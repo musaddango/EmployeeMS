@@ -76,7 +76,9 @@ function Login() {
     return (
               <>
               {/* Main Admin/Employee Login path */}
-                {loginPath && <MDBContainer fluid className='login-container'>
+                {loginPath && 
+                
+                <MDBContainer fluid className='login-container'>
                     <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                       <MDBCol col='12'>
 

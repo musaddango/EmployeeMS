@@ -1,19 +1,24 @@
 import { Outlet } from "react-router-dom";
 import SideNavBar from "../../components/Sidebar";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 
 export default function Dashboard() {
-// const navigate = useNavigate();
+const navigate = useNavigate();
+axios.defaults.withCredentials = true;
 
   useEffect(()=>{
     axios.get("http://localhost:4000/dashboard")
     .then(res => {
-      console.log(res);
+      if(res.data){
+        navigate('/dashboard')
+      }else{
+        navigate('./login')
+      }
     })
-  },[])
+  })
   return (
     <div>
       <div className='row d-flex'>

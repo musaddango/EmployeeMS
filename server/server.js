@@ -52,7 +52,7 @@ app.post('/login', (req, res)=>{
           const id = data[0].id;
           
           // JWT Sign
-          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: "1d"});
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '15s'});
           res.cookie("token", token);
           console.log(token);
           return res.json({status: 'success', data: data[0]});
@@ -64,7 +64,7 @@ app.post('/login', (req, res)=>{
       .catch(err => res.json('Error'));
 })
 
-function verify(req, res, next){
+function verifyUser(req, res, next){
   const token = req.cookies.token;
   if (!token){
     return res.json({Error: `Verification error`})
@@ -77,8 +77,8 @@ function verify(req, res, next){
   }
 }
  
-app.get('/dashboard',verify, (req, res)=>{
-    res.json(`Dashboard endpoint can be seen.`)
+app.get('/dashboard',verifyUser, (req, res)=>{
+    res.json(`success`)
 })
 
 app.post('/create', upload.single('image'), (req, res)=>{ 
