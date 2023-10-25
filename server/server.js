@@ -52,7 +52,7 @@ app.post('/login', (req, res)=>{
           const id = data[0].id;
           
           // JWT Sign
-          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '15s'});
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
           res.cookie("token", token);
           console.log(token);
           return res.json({status: 'success', data: data[0]});
