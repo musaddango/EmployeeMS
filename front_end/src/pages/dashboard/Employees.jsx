@@ -13,9 +13,7 @@ import EditEmployee from './EditEmployee';
 
 function Employees() {
 
-    // Data fetching error variables
-    const [dataError, setDataError] = useState(false);
-
+    
     // Edit Modal variables
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
@@ -83,9 +81,6 @@ function Employees() {
         .then(res => 
             {if(res.statusText === 'OK'){
                 setData(res.data);
-                setDataError(false);
-            }else{
-                setDataError(true);
             }
         })
         .catch(err=> console.log(err))
@@ -101,7 +96,7 @@ function Employees() {
             
             <hr />
 
-            {!dataError ?? <div className='d-flex justify-content-center align-items-center w-70' style={{width: 80+'%', margin: 'auto'}}>
+            {<div className='d-flex justify-content-center align-items-center w-70' style={{width: 80+'%', margin: 'auto'}}>
                 {/* Employee table - with their details */}
                 <table className='table'>
                     <thead>
@@ -165,7 +160,6 @@ function Employees() {
         </div>
         {/* Edit Modal Section */}
         {open && (
-                
                     <Modal open={open} onClose={onCloseModal} center>
                         <div style={{width: 600+"px"}}></div>
                         <EditEmployee data = {editDetails} closeModal={onCloseModal} />
