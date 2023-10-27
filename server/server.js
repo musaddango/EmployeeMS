@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path"; 
 
+// Knex database setup
 const db = knex({ 
     client: 'pg',
     connection: {
@@ -26,8 +27,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static('public'));
+app.use(express.static('public')); 
 
+// Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) =>{
     cb(null, 'public/images');
@@ -36,7 +38,6 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + Date.now() + '_' + path.extname(file.originalname));
   }
 })
-
 const upload = multer({storage: storage});
 
 app.post('/login', (req, res)=>{
@@ -53,7 +54,7 @@ app.post('/login', (req, res)=>{
           const id = data[0].id;
           
           // JWT Signed token for authentication and protection of server routes.
-          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: 30});
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
           res.cookie("token", token);
           return res.json({status: 'login success', data: data[0]});
         }else{
