@@ -174,6 +174,15 @@ app.delete('/delete/:id', verifyUser, (req, res)=>{
   .catch((err)=> res.json('delete error'))
 })
 
+app.get('/logout', (req, res) =>{
+  res.clearCookie('token');
+  return res.json({status: `success`});
+})
+
+app.get('admin', (req, res)=>{
+  
+})
+
 
 const port = 4000;
 app.listen(port, ()=>{
