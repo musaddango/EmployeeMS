@@ -41,6 +41,8 @@ const upload = multer({storage: storage});
 
 app.post('/login', (req, res)=>{
     const {email, password } = req.body;
+
+    // Fetch user detail from the database
     db.select('*')
       .from('login')
       .where({email: email,
@@ -48,33 +50,29 @@ app.post('/login', (req, res)=>{
       )      
       .then(data => {
         if(data.length > 0){
-
           const id = data[0].id;
           
-          // JWT Sign
-          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
+          // JWT Signed token for authentication and protection of server routes.
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: 30});
           res.cookie("token", token);
-          console.log(token);
-          return res.json({status: 'success', data: data[0]});
+          return res.json({status: 'login success', data: data[0]});
         }else{
           return res.json({status: 'error', error: 'Email or password invalid'}); 
         }
-
       })
-      .catch(err => res.json('Error'));
+      .catch(err => res.json({Status:'Error'}));
 })
 
+// Verification of JWT token function.
 function verifyUser(req, res, next){
   const token = req.cookies.token;
   if (!token){
-    return res.json({Error: `Verification error`})
+    return res.json({Error: `no verification token`});
   }
-  else{
-      jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
-      if(err) return res.json(`You do not have access to this resources`);
-      next();
-    })
-  }
+  jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
+  if(err) return res.json(`authentication fail`);
+  next();
+   })
 }
  
 app.get('/dashboard',verifyUser, (req, res)=>{
