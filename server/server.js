@@ -180,7 +180,10 @@ app.get('/logout', (req, res) =>{
 })
 
 app.get('admin', (req, res)=>{
-  
+  db
+  .from('users')
+  .select('*')
+  .where('id', id)
 })
 
 

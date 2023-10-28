@@ -1,6 +1,18 @@
-import React from 'react';
+import { useEffect } from "react";
+import axios from "axios";
 
-function Dashboardhome({ user }) {
+function Dashboardhome({user}) {
+
+    useEffect(()=>{
+        axios.get('http://localhost:4000/admin')
+        .then((data) => {
+            //Do something with the data.
+        })
+        .catch((err)=> {
+            //Do something when there is an error.
+        })
+    })
+
     return (
         <div>
             {/* Admin Section upper section */}
