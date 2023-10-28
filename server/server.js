@@ -42,24 +42,24 @@ const upload = multer({storage: storage});
 
 app.post('/login', (req, res)=>{
     const {email, password } = req.body;
-
+    console.log(`email: ${email}; password: ${password}`)
     // Fetch user detail from the database
     db.select('*')
-      .from('login')
-      .where({email: email,
-               password: password}
-      )      
+      .from('employees')
+      .where({email: email,})      
       .then(data => {
-        if(data.length > 0){
-          const id = data[0].id;
-          
-          // JWT Signed token for authentication and protection of server routes.
-          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
-          res.cookie("token", token);
-          return res.json({status: 'login success', data: data[0]});
-        }else{
-          return res.json({status: 'error', error: 'Email or password invalid'}); 
-        }
+        console.log(data[0])
+        if(data.length> 0){
+          bcrypt.compare(password, data[0].password, function(err, result) {
+            if (err) res.json(new Error('Error accessing database'));
+            const id = data[0].id;
+            // JWT Signed token for authentication and protection of server routes.
+            const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
+            res.cookie("token", token);
+            return res.json({status: 'login success', data: {...data[0], password: null}});
+        
+        });
+          }
       })
       .catch(err => res.json({Status:'Error'}));
 })
@@ -188,6 +188,37 @@ app.get('/employeeCount', (req, res)=>{
   })
   .catch(err => res.json('Error fetching no. of users'))
 })
+
+app.get('/employeeSalary', (req, res)=>{
+  db
+  .from('employees')
+  .sum('salary as salary')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching no. of users'))
+})
+
+app.get('/adminCount', (req, res)=>{
+  db
+  .from('admin')
+  .count('id as ID')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching salary of users'))
+})
+
+app.get('/adminDetails', (req, res)=>{
+  db
+  .select('id', 'name', 'email')
+  .from('admin')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching salary of users'))
+})
+
 
 
 const port = 4000;
