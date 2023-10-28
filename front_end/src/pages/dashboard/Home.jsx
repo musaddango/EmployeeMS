@@ -1,12 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 function Dashboardhome({user}) {
+    const [empNo, setEmpNo] = useState('')
 
     useEffect(()=>{
-        axios.get('http://localhost:4000/admin')
+        axios.get('http://localhost:4000/employeeCount')
         .then((data) => {
-            //Do something with the data.
+            console.log(data.data.data[0].ID)
+            if(data.statusText === "OK"){
+                setEmpNo(data.data.data[0].ID)
+            }else{
+                setEmpNo('Failed to fetch no. of employee')
+            }
+            
         })
         .catch((err)=> {
             //Do something when there is an error.
@@ -32,7 +39,7 @@ function Dashboardhome({user}) {
                 </div>
                 <hr />
                 <div className=''>
-                    <h5>Total: {}</h5>
+                    <h5>Total: {empNo}</h5>
                 </div> 
             </div>
             <div className='px-3 pt-2 pb-3 border shadow-sm w-25'>

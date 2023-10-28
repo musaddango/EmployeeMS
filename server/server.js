@@ -179,11 +179,14 @@ app.get('/logout', (req, res) =>{
   return res.json({status: `success`});
 })
 
-app.get('admin', (req, res)=>{
+app.get('/employeeCount', (req, res)=>{
   db
-  .from('users')
-  .select('*')
-  .where('id', id)
+  .from('employees')
+  .count('id as ID')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching no. of users'))
 })
 
 

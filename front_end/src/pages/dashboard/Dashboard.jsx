@@ -16,7 +16,7 @@ export default function Dashboard() {
         if(!res.data){
           navigate('/')
         }
-        if(!res.data === 'success'){
+        if(!(res.data === 'success')){
           navigate('/')
         }
       })
