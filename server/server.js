@@ -6,6 +6,7 @@ import knex from 'knex';
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path"; 
+import 'dotenv/config'
 
 // Knex database setup
 const db = knex({ 

@@ -6,7 +6,7 @@ function Dashboardhome({user}) {
     const [empCount, setEmpNo] = useState('');
     const [empSalary, setEmployeeSalary] = useState('');
     const [adminCount, setAdminCount] = useState('');
-    const [adminDetails, setAdminDetails] = useState('')
+    const [adminDetails, setAdminDetails] = useState([])
 
     useEffect(()=>{
         //Employee count details fetch
@@ -54,8 +54,10 @@ function Dashboardhome({user}) {
         // Admin data
          axios.get('http://localhost:4000/adminDetails')
             .then((data) => {
-                    setAdminDetails(data.data.data)
+                    console.log(data.data.data)
+                    setAdminDetails([...data.data.data])
             })
+            .then((res)=> console.log(`adminDetails: ${adminDetails}; Data: ${res}`))
             .catch((err)=> {
                 throw new Error(`Couldn't fetch admin details`)
             })
@@ -107,13 +109,12 @@ function Dashboardhome({user}) {
                     </tr>
                 </thead>
                 <tbody>
-                {adminDetails.map((item) => {
+                {adminDetails.map((item, index) => {
                     return <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.name}</td>
-                        <td>{item.email}</td>
-                    </tr>
-                })}
+                                <td>{item.id}</td>
+                                <td>{item.name}</td>
+                                <td>{item.email}</td> 
+                            </tr>})}
              </tbody>
             </table>          
         </div>
