@@ -15,7 +15,6 @@ import {
 
 
 function Login() {
-
   // state variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -77,20 +76,18 @@ function Login() {
   }
     
     return (
-              <>
+            <>
               {/* Main Admin/Employee Login path */}
-                {loginPath && 
-                
-                <MDBContainer fluid className='login-container'>
+              {loginPath && <MDBContainer fluid className='login-container'>
                     <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                       <MDBCol col='12'>
 
                         <MDBCard className='bg-dark text-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
                           <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
 
-                            <h3 className="fw-bold mb-2 text-uppercase">Login</h3>
-                            <p>Login is:</p>
-                            <div style={{display:"flex"}}>
+                            <h4 className="fw-bold mb-2 text-uppercase">Login As:</h4>
+                            <div style={{height: 40+'px'}}></div>
+                            <div style={{display:"flex",}}>
                               <div>
                                 <MDBBtn 
                                   outline className='mx-2 px-5' 
@@ -210,7 +207,7 @@ function Login() {
                     </MDBCard>
                   </MDBCol>
                 </MDBRow>
-              </MDBContainer>}
+                </MDBContainer>}
             </>
       
       );
