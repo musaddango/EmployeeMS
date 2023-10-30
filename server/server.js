@@ -55,7 +55,7 @@ app.post('/employee_login', (req, res)=>{
       .then(data => {
         console.log(data[0])
         if(data.length> 0){
-          bcrypt.compare(password.toString(), data[0].password.toString(), function(err, result) {
+          bcrypt.compare(password, data[0].password, function(err, result) {
             if (err) res.json(new Error('Error accessing database'));
             const id = data[0].id;
             // JWT Signed token for authentication and protection of server routes.
@@ -80,16 +80,16 @@ app.post('/admin_login', (req, res)=>{
   // Fetch user detail from the database
   db.select('*')
     .from('admin')
-    .where({email: email,})      
+    .where({email: email,})       
     .then(data => {
       //
       console.log(data[0])
       if(data.length> 0){
-        bcrypt.compare(password.toString(), data[0].password.toString(), function(err, result) {
-          if (err) res.json(new Error('Error accessing database'));
+        bcrypt.compare(password, data[0].password, function(err, result) {
+          if (err) res.json(new Error('Error encrypting password'));
           const { id } = data[0];
           // JWT Signed token for authentication and protection of server routes.
-          const token = jwt.sign({id}, process.env.jwt_secret_key, {expiresIn: '1 day'});
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
           res.cookie("token", token);
           return res.json({status: 'login success', data: {...data[0], password: null}});
       });
@@ -104,7 +104,7 @@ function verifyUser(req, res, next){
   if (!token){
     return res.json({Error: `no verification token`});
   }
-  jwt.verify(token, process.env.jwt_secret_key,(err, decoded)=>{
+  jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
   if(err) return res.json(`authentication fail`);
   next();
    })
@@ -122,7 +122,7 @@ app.post('/create', upload.single('image'), (req, res)=>{
       return res.json(`some of the employee field(s) are empty.`)
     }
     // Password hashing
-    bcrypt.hash(password.toString(), process.env.bcrypt_salt, (err, result)=>{
+    bcrypt.hash(password.toString(), 10, (err, result)=>{
     if(err) return res.json(`Error hashing password`);
       db('employees').insert({
         name: name,
@@ -132,7 +132,6 @@ app.post('/create', upload.single('image'), (req, res)=>{
         salary: salary,
         image: req.file.filename
       })
-      .returning('name')
       .then(() =>{ 
         console.log(`Congratulations. ${name}'s registration was successful`);
         return res.json(`success`)
@@ -260,8 +259,7 @@ app.post('employee_login', (req, res)=>{
   }
 })
 
-
-
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server is listening on port ${process.env.server_port}`)
+const port =  4000;
+app.listen(port, ()=>{
+    console.log(`Server is listening on port ${port}`)
 })
