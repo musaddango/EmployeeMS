@@ -67,7 +67,7 @@ function Login() {
           navigate('/dashboard/home');
           setError('');
       }else{
-          setError(res.data.error);
+          navigate('/login');
       }
   })
   .catch(err=> {
@@ -85,10 +85,10 @@ function Login() {
     .then(res => {
         console.log(res);
         if(res.data.status==='login success'){
-          navigate('/dashboard/home');
+          navigate('/employee_details');
           setError('');
       }else{
-          setError(res.data.error);
+          navigate('/login');
       }
   })
   .catch(err=> {
