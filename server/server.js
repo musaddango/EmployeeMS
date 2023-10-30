@@ -41,9 +41,13 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
-app.post('/login', (req, res)=>{
+app.post('/employee_login', (req, res)=>{
     const {email, password } = req.body;
-    console.log(`email: ${email}; password: ${password}`)
+
+    // Input check
+    if (!email || !password){
+      return res.json(`invalid input`);
+    }
     // Fetch user detail from the database
     db.select('*')
       .from('employees')
@@ -51,7 +55,7 @@ app.post('/login', (req, res)=>{
       .then(data => {
         console.log(data[0])
         if(data.length> 0){
-          bcrypt.compare(password, data[0].password, function(err, result) {
+          bcrypt.compare(password.toString(), data[0].password.toString(), function(err, result) {
             if (err) res.json(new Error('Error accessing database'));
             const id = data[0].id;
             // JWT Signed token for authentication and protection of server routes.
@@ -65,13 +69,42 @@ app.post('/login', (req, res)=>{
       .catch(err => res.json({Status:'Error'}));
 })
 
+app.post('/admin_login', (req, res)=>{
+  const {email, password } = req.body;
+
+  // Input check
+  if (!email || !password){
+    console.log(`invalid login input.`)
+    return res.json(`invalid input`);
+  }
+  // Fetch user detail from the database
+  db.select('*')
+    .from('admin')
+    .where({email: email,})      
+    .then(data => {
+      //
+      console.log(data[0])
+      if(data.length> 0){
+        bcrypt.compare(password.toString(), data[0].password.toString(), function(err, result) {
+          if (err) res.json(new Error('Error accessing database'));
+          const { id } = data[0];
+          // JWT Signed token for authentication and protection of server routes.
+          const token = jwt.sign({id}, process.env.jwt_secret_key, {expiresIn: '1 day'});
+          res.cookie("token", token);
+          return res.json({status: 'login success', data: {...data[0], password: null}});
+      });
+        }
+    })
+    .catch(err => res.json({Status:'Error'}));
+})
+
 // Verification of JWT token function.
 function verifyUser(req, res, next){
   const token = req.cookies.token;
   if (!token){
     return res.json({Error: `no verification token`});
   }
-  jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
+  jwt.verify(token, process.env.jwt_secret_key,(err, decoded)=>{
   if(err) return res.json(`authentication fail`);
   next();
    })
@@ -88,9 +121,9 @@ app.post('/create', upload.single('image'), (req, res)=>{
       console.log(`some of the employee field(s) are empty.`)
       return res.json(`some of the employee field(s) are empty.`)
     }
-
-    bcrypt.hash(password.toString(), 10, (err, result)=>{
-    if(err) return res.json(`There was an error storing data`);
+    // Password hashing
+    bcrypt.hash(password.toString(), process.env.bcrypt_salt, (err, result)=>{
+    if(err) return res.json(`Error hashing password`);
       db('employees').insert({
         name: name,
         email: email,
@@ -220,9 +253,15 @@ app.get('/adminDetails', (req, res)=>{
   .catch(err => res.json('Error fetching salary of users'))
 })
 
+app.post('employee_login', (req, res)=>{
+  const { email, password } = req.body;
+  if(email & password){
+    bcrypt.compare()
+  }
+})
 
 
-const port = 4000;
-app.listen(port, ()=>{
-    console.log(`Server is listening on port ${port}`)
+
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server is listening on port ${process.env.server_port}`)
 })
