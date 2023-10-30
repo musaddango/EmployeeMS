@@ -10,11 +10,14 @@ import Delete from './modals/Delete';
 import EditEmployee from './EditEmployee';
 
 
+
 function Employees() {
+
+    
+    // Edit Modal variables
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
 
-    // Edit Modal
     const onOpenModal = (event) => {
         event.preventDefault();
         getEditDetails(event);
@@ -41,7 +44,6 @@ function Employees() {
                     password: data.data[0].password,
                     salary: data.data[0].salary,
                                 })
-                    
             }
         })
         .then(()=> setOpen(true))
@@ -79,7 +81,8 @@ function Employees() {
         .then(res => 
             {if(res.statusText === 'OK'){
                 setData(res.data);
-            }})
+            }
+        })
         .catch(err=> console.log(err))
     },[])
 
@@ -92,7 +95,9 @@ function Employees() {
             </div>
             
             <hr />
-            <div className='d-flex justify-content-center align-items-center w-70' style={{width: 80+'%', margin: 'auto'}}>
+
+            {<div className='d-flex justify-content-center align-items-center w-70' style={{width: 80+'%', margin: 'auto'}}>
+                {/* Employee table - with their details */}
                 <table className='table'>
                     <thead>
                         <tr>
@@ -106,20 +111,22 @@ function Employees() {
                         </tr>
                     </thead>
                     <tbody>
+                        {/* Map and fill up data for the employee page. */}
                             {data.map((emp, index)=>{
-                            return <tr key={emp.id}>
-                                    <td>{emp.id}</td>
-                                    <td>{emp.name}</td>
-                                    <td>{<img 
-                                            src={`http://localhost:4000/images/${emp.image}`} 
-                                            alt='profileImage'
-                                            className='employeeImage'
-                                        />}
-                                    </td>
-                                    <td>{emp.email}</td>
-                                    <td>{emp.address}</td>
-                                    <td>{emp.salary}</td>
-                                    <td>
+                                    return <tr key={emp.id}>
+                                        <td>{emp.id}</td>
+                                        <td>{emp.name}</td>
+                                        <td>{<img 
+                                                src={`http://localhost:4000/images/${emp.image}`} 
+                                                alt='profileImage'
+                                                className='employeeImage'
+                                            />}
+                                        </td>
+                                        <td>{emp.email}</td>
+                                        <td>{emp.address}</td>
+                                        <td>{emp.salary}</td>
+                                        <td>
+                            {/* Edit and Delete Buttons */}
                                         <button 
                                             onClick={onOpenModal}
                                             className='btn btn-success m-1' 
@@ -139,7 +146,8 @@ function Employees() {
                             })}
                     </tbody>
                 </table>
-            </div>
+            </div>}
+
             <hr />
             <button 
                 onClick={onOpenCreateModal} 
@@ -152,7 +160,6 @@ function Employees() {
         </div>
         {/* Edit Modal Section */}
         {open && (
-                
                     <Modal open={open} onClose={onCloseModal} center>
                         <div style={{width: 600+"px"}}></div>
                         <EditEmployee data = {editDetails} closeModal={onCloseModal} />
@@ -168,13 +175,13 @@ function Employees() {
             )}
 
         {/* Create Modal Section */}
-        {create && (
-            <Modal open={create} onClose={onCloseCreateModal} center style={{width: 60+"%"}}>
-                <div style={{width: 600+"px"}}></div>
-                <h3>Create Employee</h3>
-                <CreateAccount display={onCloseCreateModal} />
-            </Modal>
-        )}
+            {create && (
+                <Modal open={create} onClose={onCloseCreateModal} center style={{width: 60+"%"}}>
+                    <div style={{width: 600+"px"}}></div>
+                    <h3>Create Employee</h3>
+                    <CreateAccount display={onCloseCreateModal} />
+                </Modal>
+            )}
         </>
         
     );

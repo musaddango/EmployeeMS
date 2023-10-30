@@ -8,12 +8,24 @@ import SideNav, {
 } from "@trendmicro/react-sidenav";
 import {  useNavigate } from 'react-router-dom';
 import './Sidebar.css';
+import axios from "axios";
 
 
 function SideNavBar (props) {
 
     const [isVisible, setIsVisible] = useState(false);
     const navigate = useNavigate();
+
+    const handleLogout = () =>{
+      // Call the logout server endpoint
+      axios.get('http://localhost:4000/logout')
+      .then((res) => {
+        navigate('/')
+      })
+      .catch((err)=> console.log(`Error login out`))
+    }
+
+
     return (
       <SideNav   className='bg-success'>
         <SideNav.Toggle
@@ -51,7 +63,7 @@ function SideNavBar (props) {
             </NavIcon>
             <NavText className='text'>Employees</NavText>
           </NavItem>
-          <NavItem eventKey="logout" onClick={()=> navigate('/')}>
+          <NavItem eventKey="logout" onClick={handleLogout}>
             <NavIcon>
               <i
                 className="fa fa-power-off"

@@ -15,7 +15,6 @@ import {
 
 
 function Login() {
-
   // state variables
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -55,36 +54,60 @@ function Login() {
   }
 
   // onSubmit make a post request to the 'login' server endpoint on submission
-  const onSubmit = async (event) => {
+  const onSubmitAdminLogin = async (event) => {
     event.preventDefault()
     const data = {
       email: email,
       password: password
     }
-    axios.post('http://localhost:4000/login', data)
+    axios.post('http://localhost:4000/admin_login', data)
     .then(res => {
-        if(res.data.status==='success'){
-          navigate('/dashboard');
+        console.log(res);
+        if(res.data.status==='login success'){
+          navigate('/dashboard/home');
           setError('');
       }else{
-          setError(res.data.error);
+          navigate('/login');
       }
-  });
+  })
+  .catch(err=> {
+    throw new Error('Fail to login')
+  })
+  }
+
+  const onSubmitEmployeeLogin = async (event) => {
+    event.preventDefault()
+    const data = {
+      email: email,
+      password: password
+    }
+    axios.post('http://localhost:4000/employee_login', data)
+    .then(res => {
+        console.log(res);
+        if(res.data.status==='login success'){
+          navigate('/employee_details');
+          setError('');
+      }else{
+          navigate('/login');
+      }
+  })
+  .catch(err=> {
+    throw new Error('Fail to login')
+  })
   }
     
     return (
-              <>
+            <>
               {/* Main Admin/Employee Login path */}
-                {loginPath && <MDBContainer fluid className='login-container'>
+              {loginPath && <MDBContainer fluid className='login-container'>
                     <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                       <MDBCol col='12'>
-
                         <MDBCard className='bg-dark text-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
                           <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
 
-                            <h3 className="fw-bold mb-2 text-uppercase">Login</h3>
-                            <p>Login is:</p>
-                            <div style={{display:"flex"}}>
+                            <h4 className="fw-bold mb-2 text-uppercase">Login As:</h4>
+                            <div style={{height: 40+'px'}}></div>
+                            <div style={{display:"flex",}}>
                               <div>
                                 <MDBBtn 
                                   outline className='mx-2 px-5' 
@@ -145,7 +168,7 @@ function Login() {
                           outline className='mx-2 px-5' 
                           color='white' 
                           size='lg' 
-                          onClick={onSubmit}
+                          onClick={onSubmitAdminLogin}
                         >
                           Login
                         </MDBBtn>
@@ -192,7 +215,7 @@ function Login() {
                           outline className='mx-2 px-5' 
                           color='white' 
                           size='lg' 
-                          onClick={onSubmit}
+                          onClick={ onSubmitEmployeeLogin}
                         >
                           Login
                         </MDBBtn>
@@ -204,7 +227,7 @@ function Login() {
                     </MDBCard>
                   </MDBCol>
                 </MDBRow>
-              </MDBContainer>}
+                </MDBContainer>}
             </>
       
       );

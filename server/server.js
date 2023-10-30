@@ -6,7 +6,9 @@ import knex from 'knex';
 import cookieParser from "cookie-parser";
 import multer from "multer";
 import path from "path"; 
+import 'dotenv/config'
 
+// Knex database setup
 const db = knex({ 
     client: 'pg',
     connection: {
@@ -20,11 +22,15 @@ const db = knex({
 const app = express();
 
 // Middlewares 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static('public'));
+app.use(express.static('public')); 
 
+// Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) =>{
     cb(null, 'public/images');
@@ -33,24 +39,79 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + Date.now() + '_' + path.extname(file.originalname));
   }
 })
-
 const upload = multer({storage: storage});
 
-app.post('/login', (req, res)=>{
-    db.select('*')
-      .from('login')
-      .where({email: req.body.email,
-               password: req.body.password}
-      )      
-      .then(data => {
-        if(data.length > 0){
-          res.json({status: 'success', data: data[0]});
-        }else{
-          res.json({status: 'error', error: 'Email or password invalid'}); 
-        }
+app.post('/employee_login', (req, res)=>{
+    const {email, password } = req.body;
 
+    // Input check
+    if (!email || !password){
+      return res.json(`invalid input`);
+    }
+    // Fetch user detail from the database
+    db.select('*')
+      .from('employees')
+      .where({email: email,})      
+      .then(data => {
+        console.log(data[0])
+        if(data.length> 0){
+          bcrypt.compare(password, data[0].password, function(err, result) {
+            if (err) res.json(new Error('Error accessing database'));
+            const id = data[0].id;
+            // JWT Signed token for authentication and protection of server routes.
+            const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
+            res.cookie("token", token);
+            return res.json({status: 'login success', data: {...data[0], password: null}});
+        
+        });
+          }
       })
-      .catch(err => console.log('Error'));
+      .catch(err => res.json({Status:'Error'}));
+})
+
+app.post('/admin_login', (req, res)=>{
+  const {email, password } = req.body;
+
+  // Input check
+  if (!email || !password){
+    console.log(`invalid login input.`)
+    return res.json(`invalid input`);
+  }
+  // Fetch user detail from the database
+  db.select('*')
+    .from('admin')
+    .where({email: email,})       
+    .then(data => {
+      //
+      console.log(data[0])
+      if(data.length> 0){
+        bcrypt.compare(password, data[0].password, function(err, result) {
+          if (err) res.json(new Error('Error encrypting password'));
+          const { id } = data[0];
+          // JWT Signed token for authentication and protection of server routes.
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
+          res.cookie("token", token);
+          return res.json({status: 'login success', data: {...data[0], password: null}});
+      });
+        }
+    })
+    .catch(err => res.json({Status:'Error'}));
+})
+
+// Verification of JWT token function.
+function verifyUser(req, res, next){
+  const token = req.cookies.token;
+  if (!token){
+    return res.json({Error: `no verification token`});
+  }
+  jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
+  if(err) return res.json(`authentication fail`);
+  next();
+   })
+}
+ 
+app.get('/dashboard',verifyUser, (req, res)=>{
+    res.json(`success`)
 })
 
 app.post('/create', upload.single('image'), (req, res)=>{ 
@@ -60,9 +121,9 @@ app.post('/create', upload.single('image'), (req, res)=>{
       console.log(`some of the employee field(s) are empty.`)
       return res.json(`some of the employee field(s) are empty.`)
     }
-
+    // Password hashing
     bcrypt.hash(password.toString(), 10, (err, result)=>{
-    if(err) return res.json(`There was an error storing data`);
+    if(err) return res.json(`Error hashing password`);
       db('employees').insert({
         name: name,
         email: email,
@@ -71,7 +132,6 @@ app.post('/create', upload.single('image'), (req, res)=>{
         salary: salary,
         image: req.file.filename
       })
-      .returning('name')
       .then(() =>{ 
         console.log(`Congratulations. ${name}'s registration was successful`);
         return res.json(`success`)
@@ -84,14 +144,14 @@ app.post('/create', upload.single('image'), (req, res)=>{
   )
 })
 
-app.get('/getEmployees', (req, res)=>{
+app.get('/getEmployees', verifyUser, (req, res)=>{
   db.select('*')
   .from('employees')
   .then(data=> res.json(data)) 
   .catch(err=> res.json(`Error getting employee data`))
 })
 
-app.post('/user_details', (req, res)=>{
+app.post('/user_details', verifyUser, (req, res)=>{
   const {id} = req.body;
   db.select('*')
   .from('employees')
@@ -101,7 +161,7 @@ app.post('/user_details', (req, res)=>{
 
 })
 
-app.post('/edit', (req, res)=>{
+app.post('/edit', verifyUser, (req, res)=>{
   const { name, email, salary, address, password, id } = req.body;
 
   if(password){
@@ -132,14 +192,13 @@ app.post('/edit', (req, res)=>{
       email: email,
       address: address,
     })  
-    .then(()=> console.log(`user details updated`))
+    .then(()=> res.json(`success`))
     .catch(err=> console.log(`Failed to update user details.`))
     }
   })
 
-
-app.post('/delete', (req, res)=>{
-  const { id } = req.body;
+app.delete('/delete/:id', verifyUser, (req, res)=>{
+  const { id } = req.params;
   db
   .from('employees')
   .where('id', id)
@@ -148,7 +207,59 @@ app.post('/delete', (req, res)=>{
   .catch((err)=> res.json('delete error'))
 })
 
-const port = 4000;
+app.get('/logout', (req, res) =>{
+  res.clearCookie('token');
+  return res.json({status: `success`});
+})
+
+app.get('/employeeCount', (req, res)=>{
+  db
+  .from('employees')
+  .count('id as ID')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching no. of users'))
+})
+
+app.get('/employeeSalary', (req, res)=>{
+  db
+  .from('employees')
+  .sum('salary as salary')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching no. of users'))
+})
+
+app.get('/adminCount', (req, res)=>{
+  db
+  .from('admin')
+  .count('id as ID')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching salary of users'))
+})
+
+app.get('/adminDetails', (req, res)=>{
+  db
+  .select('id', 'name', 'email')
+  .from('admin')
+  .then(data=> {
+    res.json({status: 'success',data: data})
+  })
+  .catch(err => res.json('Error fetching salary of users'))
+})
+
+app.post('employee_login', (req, res)=>{
+  const { email, password } = req.body;
+  if(email & password){
+    bcrypt.compare()
+  }
+})
+
+const port =  4000;
 app.listen(port, ()=>{
     console.log(`Server is listening on port ${port}`)
 })
