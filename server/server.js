@@ -86,7 +86,7 @@ app.post('/admin_login', (req, res)=>{
       console.log(data[0])
       if(data.length> 0){
         bcrypt.compare(password, data[0].password, function(err, result) {
-          if (err) res.json(new Error('Error encrypting password'));
+          if (err) res.json(new Error('Error decrypting password'));
           const { id } = data[0];
           // JWT Signed token for authentication and protection of server routes.
           const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
@@ -253,11 +253,45 @@ app.get('/adminDetails', (req, res)=>{
 })
 
 app.post('employee_login', (req, res)=>{
-  const { email, password } = req.body;
-  if(email & password){
-    bcrypt.compare()
+  const {email, password } = req.body;
+
+  // Input check
+  if (!email || !password){
+    console.log(`invalid login input.`)
+    return res.json(`invalid input`);
   }
+  // Fetch user detail from the database
+  db.select('*')
+    .from('employee')
+    .where({email: email,})       
+    .then(data => {
+      //
+      if(data.length> 0){
+        bcrypt.compare(password, data[0].password, function(err, result) {
+          if (err) res.json(new Error('Error decrypting password'));
+          const { id } = data[0];
+          // JWT Signed token for authentication and protection of server routes.
+          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
+          res.cookie("token", token);
+          return res.json({status: 'login success', data: {...data[0], password: null}});
+      });
+        }
+    })
+    .catch(err => res.json({Status:'Error'}));
 })
+
+app.get('/employee_profile/:email', (req, res)=>{
+  const { email } = req.params;
+  console.log(`/employee_profile/:email: `,email)  
+  if(!email){
+    console.log(`No email sent with request on the emp profile endpoint`);
+  }
+  db.select('name', 'email', 'id')
+  .from('employee')
+  .where('email', email)
+  .then((data)=> console.log(data))
+})
+
 
 const port =  4000;
 app.listen(port, ()=>{

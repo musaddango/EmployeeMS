@@ -33,7 +33,7 @@ function EmployeeSideNav (props) {
           }}
         />
         <SideNav.Nav defaultSelected="home">
-          <NavItem eventKey="dashboard" onClick={()=> navigate('./employee_dashboard')}>
+          <NavItem eventKey="dashboard" onClick={()=> navigate('./')}>
               <NavIcon>
                 <i 
                   className="fa fa-tachometer" 

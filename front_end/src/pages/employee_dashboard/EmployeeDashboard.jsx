@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate, } from "react-router-dom";
+import { useEffect, } from "react";
 import EmployeeSideNav from "./EmployeeSideNav";
 
 function EmployeeDashboard(props) {
@@ -9,7 +9,7 @@ function EmployeeDashboard(props) {
   const navigate = useNavigate();
 //   const params = useParams();
   axios.defaults.withCredentials = true;
-  const [employeeEmail, setEmployeeEmail] = useState(this.props.match.params.email);
+//   const [employeeEmail, setEmployeeEmail] = useState();
 
     useEffect(()=>{
       axios.get("http://localhost:4000/dashboard")
@@ -20,7 +20,6 @@ function EmployeeDashboard(props) {
         if(!(res.data === 'success')){
           navigate('/')
         }
-        console.log(employeeEmail);
         // axios.get('http://localhost:4000/employee_details/'+)
       })
     })

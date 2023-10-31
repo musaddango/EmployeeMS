@@ -84,9 +84,9 @@ function Login() {
     }
     axios.post('http://localhost:4000/employee_login', data)
     .then(res => {
-        console.log(res);
+        console.log(`Employee loging func: `,res)
         if(res.data.status==='login success'){
-          navigate('/employee_dashboard/profile/'+ email);
+          navigate('./profile/'+ email);
           setEmployeeError('');
       }else{
         setEmployeeError('Wrong login email or password. Ensure the correct detail is entered.');
