@@ -8,6 +8,7 @@ import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
 import CreateAccount from './pages/dashboard/modals/CreateAccount';
+import EmployeeDashboard from './pages/employee_dashboard/EmployeeDashboard';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,13 @@ const router = createBrowserRouter([
       },
     ]
   },
+  {
+    path: '/employee_dashboard',
+    element: <EmployeeDashboard />,
+    children: [
+      
+    ]
+  }
 ])
 
 

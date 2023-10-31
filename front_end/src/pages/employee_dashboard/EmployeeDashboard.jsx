@@ -4,9 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, } from "react";
 
-
-export default function Dashboard() {
-  // 
+function EmployeeDashboard() {
+   // 
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
@@ -30,7 +29,7 @@ export default function Dashboard() {
         </div>
         <div className="col p-0 m-0">
           <div className="p-2 d-flex justify-content-center shadow">
-            <h2>Admin Dashbaord</h2>
+            <h2>Employee Dashboard</h2>
           </div>
           <div>
             <Outlet />
@@ -39,3 +38,5 @@ export default function Dashboard() {
       </div>
     );
 }
+
+export default EmployeeDashboard;
