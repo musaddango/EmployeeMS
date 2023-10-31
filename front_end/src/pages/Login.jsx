@@ -86,7 +86,7 @@ function Login() {
     .then(res => {
         console.log(res);
         if(res.data.status==='login success'){
-          navigate('/employee_details');
+          navigate('/employee_dashboard/profile/'+ email);
           setEmployeeError('');
       }else{
         setEmployeeError('Wrong login email or password. Ensure the correct detail is entered.');

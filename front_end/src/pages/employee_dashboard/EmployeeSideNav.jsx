@@ -1,13 +1,12 @@
 import {useState} from "react";
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import SideNav, {
-  // onToggle,
   NavItem,
   NavIcon,
   NavText
 } from "@trendmicro/react-sidenav";
 import {  useNavigate } from 'react-router-dom';
-import './Sidebar.css';
+import '../../components/Sidebar.css';
 import axios from "axios";
 
 
@@ -34,16 +33,16 @@ function EmployeeSideNav (props) {
           }}
         />
         <SideNav.Nav defaultSelected="home">
-          <NavItem eventKey="dashboard" onClick={()=> navigate('./home')}>
+          <NavItem eventKey="dashboard" onClick={()=> navigate('./employee_dashboard')}>
               <NavIcon>
                 <i 
                   className="fa fa-tachometer" 
                   style={{ fontSize: "1.5em" }} 
                 />
               </NavIcon>
-              <NavText className='text'> Dashboard</NavText>
+              <NavText className='text'> Dashboard </NavText>
           </NavItem>
-          <NavItem eventKey="profile" onClick={()=> navigate('./profile')}>
+          <NavItem eventKey="profile" onClick={()=> navigate('./employee_profile')}>
             <NavIcon>
               <i
                 className="fa fa-user"
@@ -52,16 +51,6 @@ function EmployeeSideNav (props) {
               />
             </NavIcon>
             <NavText className='text'>Profile</NavText>
-          </NavItem>
-          <NavItem eventKey="employees" onClick={()=> navigate('./employees')}>
-            <NavIcon>
-              <i
-                className="fa fa-users"
-                style={{ fontSize: "1.5em" }}
-                aria-hidden="true"
-              />
-            </NavIcon>
-            <NavText className='text'>Employees</NavText>
           </NavItem>
           <NavItem eventKey="logout" onClick={handleLogout}>
             <NavIcon>

@@ -9,6 +9,7 @@ import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
 import CreateAccount from './pages/dashboard/modals/CreateAccount';
 import EmployeeDashboard from './pages/employee_dashboard/EmployeeDashboard';
+import EmployeeProfile from './pages/employee_dashboard/EmployeeProfile';
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,16 @@ const router = createBrowserRouter([
     path: '/employee_dashboard',
     element: <EmployeeDashboard />,
     children: [
-      
+      {
+        path: 'profile/:email',
+        element: <EmployeeProfile />,
+        loader: async function({param}){
+          const res = await fetch('http://localhost:4000/employee_profile/'+ param.email);
+          const data = await res.json;
+
+          return data;
+        }
+      },
     ]
   }
 ])

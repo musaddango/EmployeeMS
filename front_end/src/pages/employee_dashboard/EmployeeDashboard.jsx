@@ -1,13 +1,15 @@
 import { Outlet } from "react-router-dom";
-import SideNavBar from "../../components/Sidebar";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useEffect, } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import EmployeeSideNav from "./EmployeeSideNav";
 
-function EmployeeDashboard() {
+function EmployeeDashboard(props) {
    // 
   const navigate = useNavigate();
+//   const params = useParams();
   axios.defaults.withCredentials = true;
+  const [employeeEmail, setEmployeeEmail] = useState(this.props.match.params.email);
 
     useEffect(()=>{
       axios.get("http://localhost:4000/dashboard")
@@ -18,13 +20,16 @@ function EmployeeDashboard() {
         if(!(res.data === 'success')){
           navigate('/')
         }
+        console.log(employeeEmail);
+        // axios.get('http://localhost:4000/employee_details/'+)
       })
     })
+
     return (
       <div>
         <div className='row d-flex'>
           <div className="col">
-            <SideNavBar />
+            <EmployeeSideNav />
           </div>
         </div>
         <div className="col p-0 m-0">
