@@ -24,6 +24,7 @@ const router = createBrowserRouter([
       {
         path: 'home',
         element: <Dashboardhome />,
+        index: true,
       },
       {
         path: 'profile',
@@ -38,30 +39,19 @@ const router = createBrowserRouter([
             element: <CreateAccount />
           },
         ]
-      },
+      }
     ]
   },
   {
-    path: '/employee_dashboard',
+    path: '/employeeDashboard',
     element: <EmployeeDashboard />,
-    ErrorBoundary: <ErrorElement />,
-    children: [
-      {
-        path: './profile/:email',
-        element: <EmployeeProfile />,
-        loader: <EmployeeProfileLoader />
-      },
-    ]
+    // errorElement: <ErrorElement />,
   }
 ])
 
 
 function App() {
 
-    // const [loggedUser, setLogUser] = useState({name:'', email:'',id:''});
-    // const user =(data)=>{
-    //   setLogUser({name: data.name, email:data.email, id:data.id})
-    // } 
 
   return (
     <div className="App">

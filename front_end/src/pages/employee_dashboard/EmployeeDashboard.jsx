@@ -4,12 +4,12 @@ import { useNavigate, } from "react-router-dom";
 import { useEffect, } from "react";
 import EmployeeSideNav from "./EmployeeSideNav";
 
-function EmployeeDashboard(props) {
+function EmployeeDashboard() {
    // 
   const navigate = useNavigate();
 //   const params = useParams();
   axios.defaults.withCredentials = true;
-//   const [employeeEmail, setEmployeeEmail] = useState();
+  // const [employeeEmail, setEmployeeEmail] = useState();
 
     useEffect(()=>{
       axios.get("http://localhost:4000/dashboard")

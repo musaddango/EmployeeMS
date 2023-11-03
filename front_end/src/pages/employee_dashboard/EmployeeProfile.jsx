@@ -3,6 +3,7 @@ import { useLoaderData } from "react-router-dom";
 
 function EmployeeProfile() {
     const param = useLoaderData();
+    console.log(param);
 
     return (
         <div>
@@ -18,10 +19,10 @@ function EmployeeProfile() {
     );
 }
 
-export function Loader(param){
-    console.log(param);
+export function Loader(params){
+    console.log(params);
     try{
-      fetch('http://localhost:4000/employee_profile/'+ param.email)
+      fetch('http://localhost:4000/employee_profile/'+ params.email)
       .then((res)=>{
         console.log(res);
         return res;

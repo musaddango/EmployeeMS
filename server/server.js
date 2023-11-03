@@ -289,7 +289,7 @@ app.get('/employee_profile/:email', (req, res)=>{
   db.select('name', 'email', 'id')
   .from('employee')
   .where('email', email)
-  .then((data)=> console.log(data))
+  .then((data)=> console.log(`Employee_profile route: `,data))
 })
 
 
