@@ -61,7 +61,7 @@ function Login() {
       email: email,
       password: password
     }
-    axios.post('http://localhost:4000/admin_login', data)
+    axios.post('http://localhost:4000/admin/login', data)
     .then(res => {
         console.log(res);
         if(res.data.status==='login success'){
@@ -82,7 +82,7 @@ function Login() {
       email: email,
       password: password
     }
-    axios.post('http://localhost:4000/employee_login', data)
+    axios.post('http://localhost:4000/employee/login', data)
     .then(res => {
         if(res.data.status==='login success'){
           navigate('/employeeDashboard');

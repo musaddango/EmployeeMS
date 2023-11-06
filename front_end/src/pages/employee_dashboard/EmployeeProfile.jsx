@@ -22,7 +22,7 @@ function EmployeeProfile() {
 export function Loader(params){
     console.log(params);
     try{
-      fetch('http://localhost:4000/employee_profile/'+ params.email)
+      fetch('http://localhost:4000/employee/profile/'+ params.email)
       .then((res)=>{
         console.log(res);
         return res;

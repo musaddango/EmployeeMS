@@ -45,7 +45,7 @@ const router = createBrowserRouter([
   {
     path: '/employeeDashboard',
     element: <EmployeeDashboard />,
-    // errorElement: <ErrorElement />,
+    errorElement: <ErrorElement />,
   }
 ])
 

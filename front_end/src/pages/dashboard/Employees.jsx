@@ -31,9 +31,9 @@ function Employees() {
         salary: '',
     })
 
-    // Fetch the data to be of the employer to be edited
+    // Fetch the data to be of the employee to be edited
     const getEditDetails = (event)=>{
-        axios.post('http://localhost:4000/user_details',{id: event.target.name})
+        axios.post('http://localhost:4000/employee/details',{id: event.target.name})
         .then(data=> {
             if(data.statusText==="OK"){
                 setEditDetails({
@@ -77,7 +77,7 @@ function Employees() {
 
 
     useEffect(()=>{
-        axios.get('http://localhost:4000/getEmployees')
+        axios.get('http://localhost:4000/employee/details')
         .then(res => 
             {if(res.statusText === 'OK'){
                 setData(res.data);

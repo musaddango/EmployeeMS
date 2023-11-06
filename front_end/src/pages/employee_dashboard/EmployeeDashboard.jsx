@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import axios from "axios";
 import { useNavigate, } from "react-router-dom";
 import { useEffect, } from "react";
-import EmployeeSideNav from "./EmployeeSideNav";
+import EmployeeSideNav from "./EmployeeSideNav.jsx";
 
 function EmployeeDashboard() {
    // 
