@@ -45,23 +45,26 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
-// Login
-app.post('/employee/login', employeeLogin)
-app.post('/admin/login', adminLogin)
-
 // Verification of JWT token function.
 function verifyUser(req, res, next){
   const token = req.cookies.token;
   if (!token){
-    console.log(`no token`)
     return res.json({Error: `no verification token`});
   }
   jwt.verify(token, "jwt-secret-key",(err, decoded)=>{
-  if(err) return res.json(`authentication fail`);
+  if(err){
+    console.log(`Error verifying token`)
+    return res.json(`authentication fail`)
+  };
   next();
    })
 }
 
+// Login
+app.post('/employee/login', employeeLogin)
+app.post('/admin/login', adminLogin)
+
+// Dahsboard details
 app.get('/dashboard',verifyUser, dashboard);
 
 // formerly '/create'

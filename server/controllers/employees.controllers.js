@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { db } from '../server.js';
+import { db, } from '../server.js';
 
+// employee login controller
 export function employeeLogin(req, res){
   const {email, password } = req.body;
 
@@ -13,25 +14,29 @@ export function employeeLogin(req, res){
   }
   // Fetch user detail from the database
   db.select('*')
-    .from('employee')
+    .from('employees')
     .where({email: email,})       
     .then(data => {
       //
       if(data.length> 0){
+        console.log(`employee/login controller ${data[0]}`)
         bcrypt.compare(password, data[0].password, function(err, result) {
-          if (err) res.json(new Error('Error decrypting password'));
+          if (err) res.status(401).json('Unauthorized');
           const { id } = data[0];
           // JWT Signed token for authentication and protection of server routes.
           const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
           res.cookie("token", token);
-          console.log(data[0])
-          return res.json({status: 'success', data: {...data[0], password: null}});
+          return res.json(
+            {status: 
+            'success', 
+            data: {...data[0], 
+              password: null}
+            });
       });
         }
     })
-    .catch(err => res.json({Status:'Error'}));
+    .catch(err => res.status(400).json(`bad request`));
 }
-// Login controller
 
 //  employee/create controller
 export function creatEmployee(req, res){ 
@@ -120,7 +125,7 @@ export function employeeEdit(req, res){
   }
 
 // employee/delete/:id controller
-  export function employeeDelete(req, res){
+export function employeeDelete(req, res){
     const { id } = req.params;
     db
     .from('employees')
@@ -130,8 +135,8 @@ export function employeeEdit(req, res){
     .catch((err)=> res.json('delete error'))
   }
 
-  // 'employee/count'
-  export function employeeCount(req, res){
+// 'employee/count'
+export function employeeCount(req, res){
     db
     .from('employees')
     .count('id as ID')
@@ -141,8 +146,8 @@ export function employeeEdit(req, res){
     .catch(err => res.json('Error fetching no. of users'))
   }
 
-  // employee/salary controller
-  export function employeeSalary(req, res){
+// employee/salary controller
+export function employeeSalary(req, res){
     db
     .from('employees')
     .sum('salary as salary')
@@ -152,6 +157,7 @@ export function employeeEdit(req, res){
     .catch(err => res.json('Error fetching no. of users'))
   }
 
+  // employee/profile
 export function employeeProfile(req, res){
     const { email } = req.params;
     console.log(`/employee_profile/:email: `,email)  
