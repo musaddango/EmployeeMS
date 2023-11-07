@@ -21,18 +21,16 @@ export function employeeLogin(req, res){
       if(data.length> 0){
         console.log(`employee/login controller ${data[0]}`)
         bcrypt.compare(password, data[0].password, function(err, result) {
-          if (err) res.status(401).json('Unauthorized');
-          const { id } = data[0];
-          // JWT Signed token for authentication and protection of server routes.
-          const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
-          res.cookie("token", token);
-          return res.json(
-            {status: 
-            'success', 
-            data: {...data[0], 
-              password: null}
-            });
-      });
+          if (err) {
+                    res.status(401).send('Unauthorized');
+                  } else {
+                    const { id } = data[0];
+                    // JWT Signed token for authentication and protection of server routes.
+                    const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
+                    res.cookie("token", token);
+                    return res.json({status: 'success', data: {...data[0], password: null}});
+                  }
+        });
         }
     })
     .catch(err => res.status(400).json(`bad request`));

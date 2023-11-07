@@ -3,14 +3,14 @@ import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import knex from 'knex';
 import cookieParser from "cookie-parser";
-import multer from "multer";
-import path from "path"; 
 import 'dotenv/config'
 
-import { creatEmployee, employeeCount, employeeDelete, employeeEdit, employeeLogin, employeeProfile, employeeSalary, getEmployeeDetails, postEmployeeDetails } from "./controllers/employees.controllers.js";
-import { adminCount, adminDetails, adminLogin } from "./controllers/admin.controllers.js";
+
 import { dashboard } from "./controllers/dashboard.controllers.js";
 import { logout } from "./controllers/logout.controller.js";
+
+import { employeeRouter } from "./routers/employee.router.js";
+
 
 // Knex database setup
 export const db = knex({ 
@@ -34,19 +34,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public')); 
 
-// Multer setup
-const storage = multer.diskStorage({
-  destination: (req, file, cb) =>{
-    cb(null, 'public/images');
-  },
-  filename: (req, file, cb) =>{
-    cb(null, file.fieldname + Date.now() + '_' + path.extname(file.originalname));
-  }
-})
-const upload = multer({storage: storage});
-
 // Verification of JWT token function.
-function verifyUser(req, res, next){
+export function verifyUser(req, res, next){
   const token = req.cookies.token;
   if (!token){
     return res.json({Error: `no verification token`});
@@ -61,33 +50,10 @@ function verifyUser(req, res, next){
 }
 
 // Employee routes
-// Login
-app.route('/employee')
-.post('/login', employeeLogin)
-// Formerly, '/getEmployee'
-.get('/details', verifyUser, getEmployeeDetails)
-// Formerly '/create'
-.post('/create', upload.single('image'), creatEmployee)
-// Formerly '/user_details'
-.post('/details', verifyUser, postEmployeeDetails)
-// Formerly '/edit'
-.post('/edit', verifyUser, employeeEdit)
-// Formerly '/delete/:id'
-.delete('/delete/:id', verifyUser, employeeDelete)
-// Formerly '/employeeCount'
-.get('/count', employeeCount)
-// Formerly '/employeeSalary';
-.get('/salary', employeeSalary)
-// Formerly '/employee_profile/:email'
-.get('/profile/:email', employeeProfile)
+app.use(`/employee`,employeeRouter);
 
 // Admin routes
-app.route('/admin')
-.post('/login', adminLogin)
-// Formerly, '/adminCount'
-.get('/count', adminCount)
-// Formerly 'adminDetails'
-.get('/details', adminDetails);
+
 
 // Dahsboard details
 app.get('/dashboard',verifyUser, dashboard);
