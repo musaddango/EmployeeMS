@@ -60,41 +60,41 @@ function verifyUser(req, res, next){
    })
 }
 
+// Employee routes
 // Login
-app.post('/employee/login', employeeLogin)
-app.post('/admin/login', adminLogin)
+app.route('/employee')
+.post('/login', employeeLogin)
+// Formerly, '/getEmployee'
+.get('/details', verifyUser, getEmployeeDetails)
+// Formerly '/create'
+.post('/create', upload.single('image'), creatEmployee)
+// Formerly '/user_details'
+.post('/details', verifyUser, postEmployeeDetails)
+// Formerly '/edit'
+.post('/edit', verifyUser, employeeEdit)
+// Formerly '/delete/:id'
+.delete('/delete/:id', verifyUser, employeeDelete)
+// Formerly '/employeeCount'
+.get('/count', employeeCount)
+// Formerly '/employeeSalary';
+.get('/salary', employeeSalary)
+// Formerly '/employee_profile/:email'
+.get('/profile/:email', employeeProfile)
+
+// Admin routes
+app.route('/admin')
+.post('/login', adminLogin)
+// Formerly, '/adminCount'
+.get('/count', adminCount)
+// Formerly 'adminDetails'
+.get('/details', adminDetails);
 
 // Dahsboard details
 app.get('/dashboard',verifyUser, dashboard);
-
-// formerly '/create'
-app.post('/employee/create', upload.single('image'), creatEmployee)
-
-// Formerly, '/getEmployee'
-app.get('/employee/details', verifyUser, getEmployeeDetails)
-
-// Formerly '/user_details'
-app.post('/employee/details', verifyUser, postEmployeeDetails);
-
-// Formerly '/edit'
-app.post('/employee/edit', verifyUser, employeeEdit)
-
-// Formerly '/delete/:id'
-app.delete('employee/delete/:id', verifyUser, employeeDelete)
-
+// Logout
 app.get('/logout', logout)
 
-// Formerly '/employeeCount'
-app.get('/employee/count', employeeCount)
 
-// Formerly '/employeeSalary';
-app.get('/employee/salary', employeeSalary)
-
-// Formerly, '/adminCount'
-app.get('/admin/count', adminCount)
-
-// Formerly 'adminDetails'
-app.get('/admin/details', adminDetails)
 
 // Formerly 'employee_login'
 // app.post('employee/login', function adminLogin(req, res){
@@ -124,8 +124,6 @@ app.get('/admin/details', adminDetails)
 //       .catch(err => res.json({Status:'Error'}));
 // })
 
-// Formerly '/employee_profile/:email'
-app.get('/employee/profile/:email', employeeProfile)
 
 
 const port =  4000;

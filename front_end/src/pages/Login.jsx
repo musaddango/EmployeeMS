@@ -54,7 +54,7 @@ function Login() {
     setPassword(event.target.value);
   }
 
-  // onSubmit make a post request to the 'login' server endpoint on submission
+  // onSubmit functions for both the admin and employee routes.
   const onSubmitAdminLogin = async (event) => {
     event.preventDefault()
     const data = {
@@ -70,10 +70,10 @@ function Login() {
       }else{
         setAdminError('Wrong login email or password. Ensure the correct detail is entered.');
       }
-  })
-  .catch(err=> {
-    throw new Error('Fail to login')
-  })
+    })
+    .catch(err=> {
+        throw new Error('Login Failed')
+    })
   }
 
   const onSubmitEmployeeLogin = async (event) => {
@@ -84,12 +84,12 @@ function Login() {
     }
     axios.post('http://localhost:4000/employee/login', data)
     .then(res => {
-      console.log(`employee login data: ${res.data}`)
         if(res.data.status==='success'){
           navigate('/employee/dashboard');
           setEmployeeError('');
       }else{
-        setEmployeeError('Wrong login email or password. Ensure the correct detail is entered.');
+        setEmployeeError(`Wrong login email or password. Ensure 
+                          the correct detail is entered.`);
       }
   })
   .catch(err=> {
@@ -136,52 +136,55 @@ function Login() {
                     </MDBRow>
                 </MDBContainer>}
               {/* Admin Login */}
-              {adminLogin && <MDBContainer fluid className='login-container'>
-                <MDBRow className='d-flex justify-content-center align-items-center h-100'>
-                  <MDBCol col='12'>
-          
-                    <MDBCard className='bg-dark text-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
-                      <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
-                  
-                        <p className='text-danger'>{adminError && adminError}</p>
+              {adminLogin && 
+                <form>
+                  <MDBContainer fluid className='login-container'>
+                  <MDBRow className='d-flex justify-content-center align-items-center h-100'>
+                    <MDBCol col='12'>
+            
+                      <MDBCard className='bg-dark text-white my-5 mx-auto' style={{borderRadius: '1rem', maxWidth: '400px'}}>
+                        <MDBCardBody className='p-5 d-flex flex-column align-items-center mx-auto w-100'>
                     
-                        <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
-                        <p className="text-white-50 mb-5">Enter admin login credentials!</p>
-          
-                        <MDBInput 
-                          wrapperClass='mb-4 mx-5 w-100' 
-                          labelClass='text-white' 
-                          onChange={onEmailChange} 
-                          label='Email address' 
-                          id='formControlLg' 
-                          type='email' 
-                          size="lg"
-                        />
-                        <MDBInput 
-                          wrapperClass='mb-4 mx-5 w-100' 
-                          labelClass='text-white' label='Password' id='formControlLg1' 
-                          onChange={onPasswordChange} 
-                          type='password' 
-                          size="lg"
-                        />
-          
-                        <MDBBtn 
-                          outline className='mx-2 px-5' 
-                          color='white' 
-                          size='lg' 
-                          onClick={onSubmitAdminLogin}
-                        >
-                          Login
-                        </MDBBtn>
-                        
-                        <div>
-                          <p className="mb-0">Not an admin? <span onClick={handleEmpLogin} className="text-white-50 fw-bold">Login as an employee</span></p>
-                        </div>
-                      </MDBCardBody>
-                    </MDBCard>
-                  </MDBCol>
-                </MDBRow>
-                </MDBContainer>}
+                          <p className='text-danger'>{adminError && adminError}</p>
+                      
+                          <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
+                          <p className="text-white-50 mb-5">Enter admin login credentials!</p>
+            
+                          <MDBInput 
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-white' 
+                            onChange={onEmailChange} 
+                            label='Email address' 
+                            id='formControlLg' 
+                            type='email' 
+                            size="lg"
+                          />
+                          <MDBInput 
+                            wrapperClass='mb-4 mx-5 w-100' 
+                            labelClass='text-white' label='Password' id='formControlLg1' 
+                            onChange={onPasswordChange} 
+                            type='password' 
+                            size="lg"
+                          />
+            
+                          <MDBBtn 
+                            outline className='mx-2 px-5' 
+                            color='white' 
+                            size='lg' 
+                            onClick={onSubmitAdminLogin}
+                          >
+                            Login
+                          </MDBBtn>
+                          
+                          <div>
+                            <p className="mb-0">Not an admin? <span onClick={handleEmpLogin} className="text-white-50 fw-bold">Login as an employee</span></p>
+                          </div>
+                        </MDBCardBody>
+                      </MDBCard>
+                    </MDBCol>
+                  </MDBRow>
+                  </MDBContainer>
+                </form>}
               {/* Employee Login */}
               {empLogin && 
               <form>
@@ -236,8 +239,7 @@ function Login() {
               </form>
               }
             </>
-      
-      );
+        );
 }
 
 export default Login;
