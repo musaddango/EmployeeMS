@@ -10,7 +10,7 @@ function Dashboardhome({user}) {
 
     useEffect(()=>{
         //Employee count details fetch
-        axios.get('http://localhost:4000/employeeCount')
+        axios.get('http://localhost:4000/employee/count')
         .then((data) => {
             console.log('Employee count fetch')
             if(data.statusText === "OK"){
@@ -24,7 +24,7 @@ function Dashboardhome({user}) {
         })
 
         //Employee Salary data fetch
-        axios.get('http://localhost:4000/employeeSalary')
+        axios.get('http://localhost:4000/employee/salary')
         .then((data) => {
             console.log('Salary call')
             if(data.statusText === "OK"){
@@ -38,7 +38,7 @@ function Dashboardhome({user}) {
         })
 
         //Admin count data
-        axios.get('http://localhost:4000/adminCount')
+        axios.get('http://localhost:4000/admin/count')
         .then((data) => {
             console.log(data.data.data[0].ID)
             if(data.statusText === "OK"){
@@ -52,7 +52,7 @@ function Dashboardhome({user}) {
         })
 
         // Admin data
-         axios.get('http://localhost:4000/adminDetails')
+         axios.get('http://localhost:4000/admin/details')
             .then((data) => {
                     console.log(data.data.data)
                     setAdminDetails([...data.data.data])

@@ -24,7 +24,8 @@ export function employeeLogin(req, res){
           // JWT Signed token for authentication and protection of server routes.
           const token = jwt.sign({id}, "jwt-secret-key", {expiresIn: '1 day'});
           res.cookie("token", token);
-          return res.json({status: 'login success', data: {...data[0], password: null}});
+          console.log(data[0])
+          return res.json({status: 'success', data: {...data[0], password: null}});
       });
         }
     })

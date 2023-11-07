@@ -45,6 +45,7 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage: storage});
 
+// Login
 app.post('/employee/login', employeeLogin)
 app.post('/admin/login', adminLogin)
 
@@ -52,6 +53,7 @@ app.post('/admin/login', adminLogin)
 function verifyUser(req, res, next){
   const token = req.cookies.token;
   if (!token){
+    console.log(`no token`)
     return res.json({Error: `no verification token`});
   }
   jwt.verify(token, "jwt-secret-key",(err, decoded)=>{

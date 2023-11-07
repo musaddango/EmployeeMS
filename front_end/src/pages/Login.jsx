@@ -84,8 +84,9 @@ function Login() {
     }
     axios.post('http://localhost:4000/employee/login', data)
     .then(res => {
-        if(res.data.status==='login success'){
-          navigate('/employeeDashboard');
+      console.log(`employee login data: ${res.data}`)
+        if(res.data.status==='success'){
+          navigate('/employee/dashboard');
           setEmployeeError('');
       }else{
         setEmployeeError('Wrong login email or password. Ensure the correct detail is entered.');
@@ -182,7 +183,9 @@ function Login() {
                 </MDBRow>
                 </MDBContainer>}
               {/* Employee Login */}
-              {empLogin && <MDBContainer fluid className='login-container'>
+              {empLogin && 
+              <form>
+                <MDBContainer fluid className='login-container'>
                 <MDBRow className='d-flex justify-content-center align-items-center h-100'>
                   <MDBCol col='12'>
           
@@ -202,6 +205,7 @@ function Login() {
                           id='formControlLg' 
                           type='email' 
                           size="lg"
+                          autoComplete='username'
                         />
                         <MDBInput 
                           wrapperClass='mb-4 mx-5 w-100' 
@@ -209,13 +213,14 @@ function Login() {
                           onChange={onPasswordChange} 
                           type='password' 
                           size="lg"
+                          autoComplete="current-password"
                         />
           
                         <MDBBtn 
                           outline className='mx-2 px-5' 
                           color='white' 
                           size='lg' 
-                          onClick={ onSubmitEmployeeLogin}
+                          onClick={onSubmitEmployeeLogin}
                         >
                           Login
                         </MDBBtn>
@@ -227,7 +232,9 @@ function Login() {
                     </MDBCard>
                   </MDBCol>
                 </MDBRow>
-                </MDBContainer>}
+                </MDBContainer>
+              </form>
+              }
             </>
       
       );

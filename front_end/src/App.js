@@ -8,7 +8,7 @@ import Employees from './pages/dashboard/Employees';
 import Profile from './pages/dashboard/Profile';
 import Dashboardhome from './pages/dashboard/Home';
 import CreateAccount from './pages/dashboard/modals/CreateAccount';
-import EmployeeDashboard, { Loader as EmployeeProfileLoader } from './pages/employee_dashboard/EmployeeProfile';
+import EmployeeDashboard, { Loader } from './pages/employee_dashboard/EmployeeProfile';
 import EmployeeProfile from './pages/employee_dashboard/EmployeeProfile';
 import ErrorElement from './pages/ErrorElement';
 
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: '/employeeDashboard',
+    path: '/employee/dashboard',
     element: <EmployeeDashboard />,
     errorElement: <ErrorElement />,
   }
